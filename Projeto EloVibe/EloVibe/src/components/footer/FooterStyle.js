@@ -52,11 +52,17 @@ export const FooterStyle = StyleSheet.create({
     texto: {
         marginTop: 3,
 
-        fontSize: 9,
+        fontSize: 12,
+        fontWeight: "600",
 
         color: "#315F53",
 
         textAlign: "center",
     },
+
+    icone: {
+        width: 26,
+        height:26
+    }
 
 });

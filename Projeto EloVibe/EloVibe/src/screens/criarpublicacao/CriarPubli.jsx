@@ -3,10 +3,12 @@ import {
     Text,
     View,
     TextInput,
-    TouchableOpacity
+    TouchableOpacity,
+    Image
 } from "react-native";
 
 import { CriarPubliStyle } from "./CriarPubliStyle";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export const CriarPubli = ({ navigation }) => {
 
@@ -19,7 +21,7 @@ export const CriarPubli = ({ navigation }) => {
 
     return (
 
-        <View style={CriarPubliStyle.container}>
+        <SafeAreaView style={CriarPubliStyle.container}>
 
             {/* HEADER */}
 
@@ -75,11 +77,15 @@ export const CriarPubli = ({ navigation }) => {
 
                 <View style={CriarPubliStyle.opcoes}>
 
+                    {/* IMAGEM */}
+
                     <View style={CriarPubliStyle.opcao}>
 
-                        <Text style={CriarPubliStyle.iconeOpcao}>
-                            ▣
-                        </Text>
+                        <Image
+                            source={require("../../../assets/GaleriaImagem.png")}
+                            style={CriarPubliStyle.iconeOpcao}
+                            resizeMode="contain"
+                        />
 
                         <Text style={CriarPubliStyle.textoOpcao}>
                             Imagem
@@ -88,11 +94,15 @@ export const CriarPubli = ({ navigation }) => {
                     </View>
 
 
+                    {/* LOCALIZAÇÃO */}
+
                     <View style={CriarPubliStyle.opcao}>
 
-                        <Text style={CriarPubliStyle.iconeOpcao}>
-                            ♢
-                        </Text>
+                        <Image
+                            source={require("../../../assets/Localizacao.png")}
+                            style={CriarPubliStyle.iconeOpcao}
+                            resizeMode="contain"
+                        />
 
                         <Text style={CriarPubliStyle.textoOpcao}>
                             Localização
@@ -101,11 +111,15 @@ export const CriarPubli = ({ navigation }) => {
                     </View>
 
 
+                    {/* SENTIMENTOS */}
+
                     <View style={CriarPubliStyle.opcao}>
 
-                        <Text style={CriarPubliStyle.iconeOpcao}>
-                            ☺
-                        </Text>
+                        <Image
+                            source={require("../../../assets/Emocoes.png")}
+                            style={CriarPubliStyle.iconeOpcao}
+                            resizeMode="contain"
+                        />
 
                         <Text style={CriarPubliStyle.textoOpcao}>
                             Sentimentos
@@ -119,6 +133,7 @@ export const CriarPubli = ({ navigation }) => {
                 {/* BOTÃO */}
 
                 <TouchableOpacity
+                    onPress={handleFechar}
                     style={CriarPubliStyle.botaoCriar}
                     activeOpacity={0.8}
                 >
@@ -132,18 +147,15 @@ export const CriarPubli = ({ navigation }) => {
             </View>
 
 
-            {/* DECORAÇÃO INFERIOR */}
+            {/* IMAGEM DECORATIVA - CANTO INFERIOR ESQUERDO */}
 
-            <View style={CriarPubliStyle.decoracao}>
+            <Image
+                source={require("../../../assets/ChatGPT Image 8_09_2026, 13_58_53 2.png")}
+                style={CriarPubliStyle.decoracao}
+                resizeMode="contain"
+                pointerEvents="none"
+            />
 
-                <View style={CriarPubliStyle.curvaLaranja} />
-
-                <View style={CriarPubliStyle.curvaVermelha} />
-
-                <View style={CriarPubliStyle.curvaVerde} />
-
-            </View>
-
-        </View>
+        </SafeAreaView>
     );
 };

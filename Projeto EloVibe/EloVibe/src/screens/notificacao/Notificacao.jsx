@@ -1,7 +1,17 @@
-import { Image, ScrollView, Text, View } from "react-native";
+import React from "react";
+
+import {
+    Image,
+    ScrollView,
+    Text,
+    View,
+} from "react-native";
+
 import { NotificacaoStyle } from "./NotificacaoStyle";
 import Footer from "../../components/footer/Footer";
-export const Notificacao = () => {
+import { SafeAreaView } from "react-native-safe-area-context";
+
+export const Notificacao = ({ navigation }) => {
 
     const notificacoes = [
         {
@@ -41,14 +51,17 @@ export const Notificacao = () => {
         },
     ];
 
+
     return (
-        <View style={NotificacaoStyle.container}>
+        <SafeAreaView style={NotificacaoStyle.container}>
 
             {/* HEADER */}
             <View style={NotificacaoStyle.header}>
+
                 <Text style={NotificacaoStyle.titulo}>
                     Notificações
                 </Text>
+
             </View>
 
 
@@ -65,11 +78,14 @@ export const Notificacao = () => {
                         style={NotificacaoStyle.notificacaoCard}
                     >
 
+                        {/* ÍCONE DA NOTIFICAÇÃO */}
                         <Image
                             source={notificacao.imagem}
                             style={NotificacaoStyle.iconeNotificacao}
                         />
 
+
+                        {/* TEXTOS */}
                         <View style={NotificacaoStyle.textoContainer}>
 
                             <View style={NotificacaoStyle.linhaPrincipal}>
@@ -84,6 +100,7 @@ export const Notificacao = () => {
 
                             </View>
 
+
                             <Text style={NotificacaoStyle.horario}>
                                 {notificacao.horario}
                             </Text>
@@ -94,12 +111,12 @@ export const Notificacao = () => {
 
                 ))}
 
-
-
             </ScrollView>
-            
-           <Footer/>
 
-        </View>
+
+            {/* FOOTER */}
+            <Footer navigation={navigation} />
+
+        </SafeAreaView>
     );
 };

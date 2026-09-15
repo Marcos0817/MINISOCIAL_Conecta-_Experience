@@ -32,9 +32,10 @@ export const LoginStyle = StyleSheet.create({
     title: {
         fontSize: 28,
         fontWeight: "700",
-        color: "#24312A",
+        color: "#1F4F40",
         textAlign: "center",
         marginBottom: 48,
+        marginTop: 80
     },
 
 

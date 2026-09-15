@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import {
     View,
     Text,
@@ -12,9 +13,12 @@ import {
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
+
 import { LoginStyle } from "./TelaLoginStyle";
 
+
 export default function Login({ navigation }) {
+
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [mostrarSenha, setMostrarSenha] = useState(false);
@@ -23,55 +27,108 @@ export default function Login({ navigation }) {
     const [emailFocado, setEmailFocado] = useState(false);
     const [senhaFocada, setSenhaFocada] = useState(false);
 
-    // Entrar
+
+    // =====================================================
+    // ENTRAR
+    // =====================================================
+
     const handleEntrar = () => {
-        console.log("1 - BOTÃO CLICADO");
 
+        // Verifica se os campos estão preenchidos
+        if (email.trim() === "" || senha.trim() === "") {
+
+            Alert.alert(
+                "Campos obrigatórios",
+                "Preencha todos os campos para entrar."
+            );
+
+            return;
+        }
+
+        // Mantendo a navegação original
         navigation.navigate("Inicio");
-
-        console.log("2 - NAVEGAÇÃO EXECUTADA");
     };
 
-    // Esqueceu a senha
+
+    // =====================================================
+    // ESQUECEU A SENHA
+    // =====================================================
+
     const handleEsqueceuSenha = () => {
+
         Alert.alert(
             "Esqueceu a senha?",
             "A recuperação de senha será disponibilizada em breve."
         );
+
     };
 
-    // Login com Google
+
+    // =====================================================
+    // LOGIN COM GOOGLE
+    // =====================================================
+
     const handleLoginGoogle = () => {
+
         Alert.alert(
             "Google",
             "Login com Google será disponibilizado em breve."
         );
+
     };
 
-    // Criar conta
+
+    // =====================================================
+    // CRIAR CONTA
+    // =====================================================
+
     const handleCriarConta = () => {
+
         navigation.navigate("CriarConta");
+
     };
+
 
     return (
+
         <KeyboardAvoidingView
             style={LoginStyle.keyboardContainer}
-            behavior={Platform.OS === "ios" ? "padding" : undefined}
+            behavior={
+                Platform.OS === "ios"
+                    ? "padding"
+                    : "height"
+            }
+            keyboardVerticalOffset={
+                Platform.OS === "ios"
+                    ? 0
+                    : 20
+            }
         >
+
             <ScrollView
                 style={LoginStyle.scroll}
-                contentContainerStyle={LoginStyle.scrollContent}
+                contentContainerStyle={[
+                    LoginStyle.scrollContent,
+                    {
+                        flexGrow: 1,
+                        paddingBottom: 40,
+                    },
+                ]}
                 showsVerticalScrollIndicator={false}
                 keyboardShouldPersistTaps="handled"
             >
+
                 <View style={LoginStyle.container}>
 
                     {/* TÍTULO */}
+
                     <Text style={LoginStyle.title}>
                         Login
                     </Text>
 
+
                     {/* E-MAIL */}
+
                     <Text style={LoginStyle.label}>
                         E-mail
                     </Text>
@@ -89,9 +146,12 @@ export default function Login({ navigation }) {
                         autoCapitalize="none"
                         onFocus={() => setEmailFocado(true)}
                         onBlur={() => setEmailFocado(false)}
+                        returnKeyType="next"
                     />
 
+
                     {/* SENHA */}
+
                     <Text style={LoginStyle.label}>
                         Senha
                     </Text>
@@ -102,6 +162,7 @@ export default function Login({ navigation }) {
                             senhaFocada && LoginStyle.passwordFocado,
                         ]}
                     >
+
                         <TextInput
                             style={LoginStyle.passwordInput}
                             placeholder="Digite sua senha"
@@ -111,13 +172,19 @@ export default function Login({ navigation }) {
                             secureTextEntry={!mostrarSenha}
                             onFocus={() => setSenhaFocada(true)}
                             onBlur={() => setSenhaFocada(false)}
+                            returnKeyType="done"
                         />
 
+
                         {/* MOSTRAR / OCULTAR SENHA */}
+
                         <TouchableOpacity
                             style={LoginStyle.eyeButton}
-                            onPress={() => setMostrarSenha(!mostrarSenha)}
+                            onPress={() =>
+                                setMostrarSenha(!mostrarSenha)
+                            }
                         >
+
                             <Ionicons
                                 name={
                                     mostrarSenha
@@ -127,38 +194,54 @@ export default function Login({ navigation }) {
                                 size={24}
                                 color="#315F53"
                             />
+
                         </TouchableOpacity>
+
                     </View>
 
+
                     {/* ESQUECEU A SENHA */}
+
                     <TouchableOpacity
                         onPress={handleEsqueceuSenha}
                     >
+
                         <Text style={LoginStyle.forgotPassword}>
                             Esqueceu a senha?
                         </Text>
+
                     </TouchableOpacity>
 
+
                     {/* BOTÃO ENTRAR */}
+
                     <TouchableOpacity
                         style={LoginStyle.button}
                         onPress={handleEntrar}
+                        activeOpacity={0.8}
                     >
+
                         <Text style={LoginStyle.buttonText}>
                             Entrar
                         </Text>
+
                     </TouchableOpacity>
 
+
                     {/* OU */}
+
                     <Text style={LoginStyle.orText}>
                         ou
                     </Text>
 
+
                     {/* GOOGLE */}
+
                     <TouchableOpacity
                         style={LoginStyle.googleButton}
                         onPress={handleLoginGoogle}
                     >
+
                         <Image
                             source={require("../../../assets/image 5.png")}
                             style={LoginStyle.googleIcon}
@@ -168,10 +251,14 @@ export default function Login({ navigation }) {
                         <Text style={LoginStyle.googleText}>
                             Continuar com Google
                         </Text>
+
                     </TouchableOpacity>
 
+
                     {/* CRIAR CONTA */}
+
                     <Text style={LoginStyle.registerText}>
+
                         Não tem uma conta?{" "}
 
                         <Text
@@ -180,10 +267,14 @@ export default function Login({ navigation }) {
                         >
                             Criar conta
                         </Text>
+
                     </Text>
 
                 </View>
+
             </ScrollView>
+
         </KeyboardAvoidingView>
+
     );
 }

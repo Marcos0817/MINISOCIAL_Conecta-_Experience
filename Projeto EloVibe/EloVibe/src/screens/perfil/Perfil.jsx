@@ -9,6 +9,7 @@ import {
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import PerfilStyle from "./PerfilStyle";
 
@@ -28,7 +29,7 @@ export default function TelaPerfil({ navigation }) {
 
 
     return (
-        <View style={PerfilStyle.container}>
+        <SafeAreaView style={PerfilStyle.container}>
 
             {/* CONTEÚDO DO PERFIL */}
 
@@ -58,15 +59,31 @@ export default function TelaPerfil({ navigation }) {
                 </Text>
 
 
-                {/* FOTO */}
+                {/* FOTO DO PERFIL */}
 
                 <View style={PerfilStyle.fotoContainer}>
 
                     <Image
-                        source={require("../../../assets/Pessoa.png")}
+                        source={require("../../../assets/images-galocego.jpg")}
                         style={PerfilStyle.foto}
                         resizeMode="cover"
                     />
+
+
+                    {/* BOTÃO EDITAR */}
+
+                    <TouchableOpacity
+                        style={PerfilStyle.botaoEditar}
+                        onPress={() => navigation.navigate("EditarPerfil")}
+                    >
+
+                        <Image
+                            source={require("../../../assets/EditarPerfil.png")}
+                            style={PerfilStyle.imagemEditar}
+                            resizeMode="contain"
+                        />
+
+                    </TouchableOpacity>
 
                 </View>
 
@@ -208,6 +225,6 @@ export default function TelaPerfil({ navigation }) {
 
             <Footer navigation={navigation} />
 
-        </View>
+        </SafeAreaView>
     );
 }

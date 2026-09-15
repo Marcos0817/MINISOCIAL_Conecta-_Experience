@@ -8,7 +8,7 @@ export const TelaFeedStyle = StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor: "#FAF7F0",
+        backgroundColor: "#FBF6EE",
         paddingTop: 0,
     },
 
@@ -31,7 +31,7 @@ export const TelaFeedStyle = StyleSheet.create({
     titulo: {
         fontSize: 26,
         fontWeight: "bold",
-        color: "#315F53",
+        color: "#008a66",
         marginLeft: 27,
     },
 
@@ -60,7 +60,7 @@ export const TelaFeedStyle = StyleSheet.create({
 
     scrollContent: {
         paddingHorizontal: 27,
-        paddingTop: 15,
+        paddingTop:30,
         paddingBottom: 20,
     },
 
@@ -70,7 +70,7 @@ export const TelaFeedStyle = StyleSheet.create({
     // =====================================================
 
     post: {
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#F9F9F1",
 
         borderRadius: 8,
 
@@ -250,6 +250,34 @@ export const TelaFeedStyle = StyleSheet.create({
         width: 25,
 
         height: 25,
+    },
+
+
+    // =====================================================
+    // BOTÃO FLUTUANTE - CRIAR PUBLICAÇÃO
+    // =====================================================
+
+    botaoCriarPublicacao: {
+        position: "absolute",
+
+        right: 18,
+
+        bottom: 145,
+
+        width: 62,
+
+        height: 62,
+
+        zIndex: 20,
+
+        elevation: 10,
+    },
+
+
+    imagemCriarPublicacao: {
+        width: "100%",
+
+        height: "100%",
     },
 
 });

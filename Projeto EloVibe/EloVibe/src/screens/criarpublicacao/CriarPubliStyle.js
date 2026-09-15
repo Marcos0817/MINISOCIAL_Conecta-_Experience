@@ -7,7 +7,9 @@ export const CriarPubliStyle = StyleSheet.create({
         backgroundColor: "#FBF6EE",
     },
 
+
     // HEADER
+
     header: {
         height: 105,
         width: "100%",
@@ -15,46 +17,51 @@ export const CriarPubliStyle = StyleSheet.create({
         alignItems: "center",
         position: "relative",
     },
+
     closeButton: {
         position: "absolute",
-        top: 20, 
-        left: 20, 
+        top: 24,
+        left: 20,
         height: 40,
-        width:40
-       
+        width: 40,
     },
+
     fechar: {
-        fontSize: 24, // aumente ou diminua esse valor pra ajustar o tamanho
+        fontSize: 40,
         fontWeight: "600",
-        color: "#3A6152"
+        color: "#3A6152",
     },
 
     titulo: {
-        fontSize: 18,
+        fontSize: 28,
         fontWeight: "700",
         color: "#3A6152",
-        marginTop: 10,
+        marginTop: 46,
     },
 
+
     // CONTEÚDO
+
     conteudo: {
         flex: 1,
         paddingHorizontal: 15,
     },
 
     pergunta: {
-        fontSize: 12,
+        fontSize: 17,
         fontWeight: "500",
         color: "#3A6152",
 
         marginTop: 30,
-        marginBottom: 13,
+        marginBottom: 17,
     },
 
+
     // TEXT INPUT
+
     textoArea: {
         width: "100%",
-        height: 127,
+        height: 185,
 
         borderWidth: 1,
         borderColor: "#E4DED2",
@@ -65,7 +72,7 @@ export const CriarPubliStyle = StyleSheet.create({
         paddingHorizontal: 10,
         paddingTop: 8,
 
-        fontSize: 12,
+        fontSize: 20,
         color: "#24312A",
 
         textAlignVertical: "top",
@@ -74,20 +81,22 @@ export const CriarPubliStyle = StyleSheet.create({
     contador: {
         position: "absolute",
 
-        right: 25,
-        top: 168,
+        right: 54,
+        top: 227,
 
-        fontSize: 10,
+        fontSize: 20,
         color: "#888888",
     },
 
+
     // OPÇÕES
+
     opcoes: {
         flexDirection: "row",
         alignItems: "center",
 
-        marginTop: 27,
-        marginLeft: 17,
+        marginTop: 34,
+        marginLeft: 39,
 
         gap: 18,
     },
@@ -98,22 +107,25 @@ export const CriarPubliStyle = StyleSheet.create({
     },
 
     iconeOpcao: {
-        fontSize: 16,
-        color: "#3A6152",
+        width: 20,
+        height: 20,
 
-        marginRight: 3,
+        marginRight: 4,
     },
 
     textoOpcao: {
-        fontSize: 9,
+        fontSize: 12,
         fontWeight: "500",
         color: "#3A6152",
+         marginRight: 15,
     },
 
+
     // BOTÃO
+
     botaoCriar: {
         width: "100%",
-        height: 43,
+        height: 63,
 
         backgroundColor: "#FF6037",
 
@@ -122,7 +134,7 @@ export const CriarPubliStyle = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
 
-        marginTop: 14,
+        marginTop: 24,
     },
 
     textoBotao: {
@@ -131,59 +143,19 @@ export const CriarPubliStyle = StyleSheet.create({
         color: "#FFFFFF",
     },
 
-    // DECORAÇÃO
+
+    // IMAGEM DO CANTO
+
     decoracao: {
         position: "absolute",
 
         left: 0,
         bottom: 0,
 
-        width: 155,
-        height: 150,
+        width: 250,
+        height: 255,
 
-        overflow: "hidden",
-    },
-
-    curvaLaranja: {
-        position: "absolute",
-
-        width: 150,
-        height: 150,
-
-        borderTopRightRadius: 150,
-
-        backgroundColor: "#F1974B",
-
-        left: -75,
-        bottom: -72,
-    },
-
-    curvaVermelha: {
-        position: "absolute",
-
-        width: 125,
-        height: 125,
-
-        borderTopRightRadius: 125,
-
-        backgroundColor: "#E8735F",
-
-        left: -55,
-        bottom: -60,
-    },
-
-    curvaVerde: {
-        position: "absolute",
-
-        width: 110,
-        height: 110,
-
-        borderTopRightRadius: 110,
-
-        backgroundColor: "#24312A",
-
-        left: -35,
-        bottom: -50,
+        zIndex: 10,
     },
 
 });

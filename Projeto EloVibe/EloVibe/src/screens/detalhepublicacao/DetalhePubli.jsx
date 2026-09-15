@@ -7,9 +7,12 @@ import {
     TouchableOpacity,
     TextInput,
     ScrollView,
+    KeyboardAvoidingView,
+    Platform,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import PublicacaoStyle from "./DetalhePubliStyle";
 
@@ -35,63 +38,189 @@ export default function TelaPublicacao({ navigation }) {
 
 
     return (
-        <View style={PublicacaoStyle.container}>
+        <SafeAreaView style={PublicacaoStyle.container}>
 
-            {/* ==========================================
-                CONTEÚDO
-            ========================================== */}
-
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={PublicacaoStyle.scrollContent}
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
             >
 
-                {/* TÍTULO */}
-
-                <Text style={PublicacaoStyle.titulo}>
-                    Publicação
-                </Text>
-
-
-                {/* COMPARTILHAR */}
-
-                <TouchableOpacity
-                    style={PublicacaoStyle.compartilhar}
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={[
+                        PublicacaoStyle.scrollContent,
+                        {
+                            flexGrow: 1,
+                            paddingBottom: 40,
+                        },
+                    ]}
+                    keyboardShouldPersistTaps="handled"
                 >
-                    <Ionicons
-                        name="share-social-outline"
-                        size={25}
-                        color="#315F53"
-                    />
-                </TouchableOpacity>
+
+                    {/* TÍTULO */}
+
+                    <Text style={PublicacaoStyle.titulo}>
+                        Publicação
+                    </Text>
 
 
-                {/* ==========================================
-                    PUBLICAÇÃO
-                ========================================== */}
+                    {/* COMPARTILHAR */}
 
-                <View style={PublicacaoStyle.post}>
+                    <TouchableOpacity
+                        style={PublicacaoStyle.compartilhar}
+                    >
+                        <Ionicons
+                            name="share-social-outline"
+                            size={25}
+                            color="#315F53"
+                        />
+                    </TouchableOpacity>
 
-                    {/* CABEÇALHO */}
 
-                    <View style={PublicacaoStyle.postHeader}>
+                    {/* CARD DA PUBLICAÇÃO */}
 
-                        <View style={PublicacaoStyle.usuario}>
+                    <View style={PublicacaoStyle.post}>
 
-                            <Image
-                                source={require("../../../assets/Pessoa.png")}
-                                style={PublicacaoStyle.avatar}
-                                resizeMode="cover"
-                            />
+                        {/* CABEÇALHO */}
 
-                            <View>
+                        <View style={PublicacaoStyle.postHeader}>
 
-                                <Text style={PublicacaoStyle.nome}>
-                                    Galo Cego
+                            <View style={PublicacaoStyle.usuario}>
+
+                                <Image
+                                    source={require("../../../assets/images-galocego.jpg")}
+                                    style={PublicacaoStyle.avatar}
+                                    resizeMode="cover"
+                                />
+
+                                <View>
+
+                                    <Text style={PublicacaoStyle.nome}>
+                                        Galo Cego
+                                    </Text>
+
+                                    <Text style={PublicacaoStyle.horario}>
+                                        Hoje às 10:30
+                                    </Text>
+
+                                </View>
+
+                            </View>
+
+
+                            {/* TRÊS PONTOS */}
+
+                            <TouchableOpacity>
+                                <Text style={PublicacaoStyle.pontos}>
+                                    •••
+                                </Text>
+                            </TouchableOpacity>
+
+                        </View>
+
+
+                        {/* TEXTO */}
+
+                        <Text style={PublicacaoStyle.textoPublicacao}>
+                            Meu primeiro projeto mobile ficou prontooo!!
+                        </Text>
+
+
+                        {/* IMAGEM */}
+
+                        <Image
+                            source={require("../../../assets/Salvar.png")}
+                            style={PublicacaoStyle.imagem}
+                            resizeMode="cover"
+                        />
+
+
+                        {/* AÇÕES */}
+
+                        <View style={PublicacaoStyle.acoes}>
+
+                            {/* CURTIDA */}
+
+                            <TouchableOpacity
+                                style={PublicacaoStyle.acao}
+                                onPress={curtir}
+                            >
+
+                                <Ionicons
+                                    name={curtido ? "heart" : "heart-outline"}
+                                    size={27}
+                                    color={curtido ? "#F16A3B" : "#315F53"}
+                                />
+
+                                <Text style={PublicacaoStyle.numero}>
+                                    {curtidas}
                                 </Text>
 
-                                <Text style={PublicacaoStyle.horario}>
+                            </TouchableOpacity>
+
+
+                            {/* COMENTÁRIOS */}
+
+                            <TouchableOpacity
+                                style={PublicacaoStyle.acao}
+                            >
+
+                                <Ionicons
+                                    name="chatbubble-outline"
+                                    size={26}
+                                    color="#315F53"
+                                />
+
+                                <Text style={PublicacaoStyle.numero}>
+                                    8
+                                </Text>
+
+                            </TouchableOpacity>
+
+
+                            {/* SALVAR */}
+
+                            <TouchableOpacity
+                                style={PublicacaoStyle.salvar}
+                            >
+
+                                <Ionicons
+                                    name="bookmark-outline"
+                                    size={28}
+                                    color="#315F53"
+                                />
+
+                            </TouchableOpacity>
+
+                        </View>
+
+
+                        {/* COMENTÁRIOS */}
+
+                        <Text style={PublicacaoStyle.comentariosTitulo}>
+                            Comentarios
+                        </Text>
+
+
+                        {/* COMENTÁRIO 1 */}
+
+                        <View style={PublicacaoStyle.comentario}>
+
+                            <View style={PublicacaoStyle.avatarComentario} />
+
+                            <View style={PublicacaoStyle.comentarioConteudo}>
+
+                                <Text style={PublicacaoStyle.nomeComentario}>
+                                    Maria Oliveira
+                                </Text>
+
+                                <Text style={PublicacaoStyle.horarioComentario}>
                                     Hoje às 10:30
+                                </Text>
+
+                                <Text style={PublicacaoStyle.textoComentario}>
+                                    Muito bom! Continue Assim!
                                 </Text>
 
                             </View>
@@ -99,162 +228,53 @@ export default function TelaPublicacao({ navigation }) {
                         </View>
 
 
-                        {/* TRÊS PONTOS */}
+                        {/* CAMPO DE COMENTÁRIO */}
 
-                        <TouchableOpacity>
-                            <Text style={PublicacaoStyle.pontos}>
-                                •••
-                            </Text>
-                        </TouchableOpacity>
+                        <View style={PublicacaoStyle.campoComentario}>
 
-                    </View>
-
-
-                    {/* TEXTO */}
-
-                    <Text style={PublicacaoStyle.textoPublicacao}>
-                        Meu primeiro projeto mobile ficou prontooo!!
-                    </Text>
-
-
-                    {/* IMAGEM */}
-
-                    <Image
-                        source={require("../../../assets/Salvar.png")}
-                        style={PublicacaoStyle.imagem}
-                        resizeMode="cover"
-                    />
-
-
-                    {/* AÇÕES */}
-
-                    <View style={PublicacaoStyle.acoes}>
-
-                        {/* CURTIDA */}
-
-                        <TouchableOpacity
-                            style={PublicacaoStyle.acao}
-                            onPress={curtir}
-                        >
-
-                            <Ionicons
-                                name={curtido ? "heart" : "heart-outline"}
-                                size={27}
-                                color={curtido ? "#F16A3B" : "#315F53"}
+                            <TextInput
+                                style={PublicacaoStyle.inputComentario}
+                                placeholder="Escreva um comentário..."
+                                placeholderTextColor="#777777"
+                                value={comentario}
+                                onChangeText={setComentario}
+                                underlineColorAndroid="transparent"
+                                returnKeyType="send"
+                                multiline={false}
                             />
 
-                            <Text style={PublicacaoStyle.numero}>
-                                {curtidas}
-                            </Text>
+                            <TouchableOpacity
+                                style={PublicacaoStyle.botaoEnviar}
+                                activeOpacity={0.7}
+                                onPress={() => {
+                                    console.log(
+                                        "Enviar comentário:",
+                                        comentario
+                                    );
+                                }}
+                            >
 
-                        </TouchableOpacity>
+                                <Image
+                                    source={require("../../../assets/AviaoCompartilhar.png")}
+                                    style={PublicacaoStyle.iconeEnviar}
+                                    resizeMode="contain"
+                                />
 
-
-                        {/* COMENTÁRIOS */}
-
-                        <TouchableOpacity
-                            style={PublicacaoStyle.acao}
-                        >
-
-                            <Ionicons
-                                name="chatbubble-outline"
-                                size={26}
-                                color="#315F53"
-                            />
-
-                            <Text style={PublicacaoStyle.numero}>
-                                8
-                            </Text>
-
-                        </TouchableOpacity>
-
-
-                        {/* SALVAR */}
-
-                        <TouchableOpacity
-                            style={PublicacaoStyle.salvar}
-                        >
-
-                            <Ionicons
-                                name="bookmark-outline"
-                                size={28}
-                                color="#315F53"
-                            />
-
-                        </TouchableOpacity>
-
-                    </View>
-
-
-                    {/* COMENTÁRIOS */}
-
-                    <Text style={PublicacaoStyle.comentariosTitulo}>
-                        Comentarios
-                    </Text>
-
-
-                    {/* COMENTÁRIO 1 */}
-
-                    <View style={PublicacaoStyle.comentario}>
-
-                        <View style={PublicacaoStyle.avatarComentario} />
-
-                        <View style={PublicacaoStyle.comentarioConteudo}>
-
-                            <Text style={PublicacaoStyle.nomeComentario}>
-                                Maria Oliveira
-                            </Text>
-
-                            <Text style={PublicacaoStyle.horarioComentario}>
-                                Hoje às 10:30
-                            </Text>
-
-                            <Text style={PublicacaoStyle.textoComentario}>
-                                Muito bom! Continue Assim!
-                            </Text>
+                            </TouchableOpacity>
 
                         </View>
 
                     </View>
 
+                </ScrollView>
 
-                    {/* CAMPO DE COMENTÁRIO */}
-
-                    <View style={PublicacaoStyle.campoComentario}>
-
-                        <TextInput
-                            style={PublicacaoStyle.inputComentario}
-                            placeholder="Escreva um comentário..."
-                            placeholderTextColor="#777777"
-                            value={comentario}
-                            onChangeText={setComentario}
-                        />
-
-                        <TouchableOpacity
-                            style={PublicacaoStyle.botaoEnviar}
-                        >
-
-                            <Ionicons
-                                name="send-outline"
-                                size={22}
-                                color="#315F53"
-                            />
-
-                        </TouchableOpacity>
-
-                    </View>
-
-                </View>
-
-            </ScrollView>
+            </KeyboardAvoidingView>
 
 
-            {/* ==========================================
-                FOOTER
-            ========================================== */}
+            {/* FOOTER */}
 
             <Footer navigation={navigation} />
 
-        </View>
+        </SafeAreaView>
     );
 }

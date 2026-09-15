@@ -3,58 +3,75 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import TabNavigator from "./TabNavigator";
+
 import TelaBoasVindas from "../screens/telaboasvindas/TelaBoasVindas";
 import Login from "../screens/login/Login";
 import CriarConta from "../screens/telacadastro/TelaCadastro";
 import Configuracao from "../screens/configuracao/Configuracao";
 import EditarPerfil from "../screens/editarperfil/EditarPerfil";
 import DetalhePubli from "../screens/detalhepublicacao/DetalhePubli";
+import { Notificacao } from "../screens/notificacao/Notificacao";
 
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen
-          name="BoasVindas"
-          component={TelaBoasVindas}
-        />
+    return (
+        <NavigationContainer>
+            <Stack.Navigator
+                screenOptions={{
+                    headerShown: false,
+                }}
+            >
 
-        <Stack.Screen
-          name="Login"
-          component={Login}
-        />
+                {/* TELA DE BOAS-VINDAS */}
+                <Stack.Screen
+                    name="BoasVindas"
+                    component={TelaBoasVindas}
+                />
 
-        <Stack.Screen
-          name="CriarConta"
-          component={CriarConta}
-        />
+                {/* LOGIN */}
+                <Stack.Screen
+                    name="Login"
+                    component={Login}
+                />
 
-        <Stack.Screen
-          name="Principal"
-          component={TabNavigator}
-        />
+                {/* CRIAR CONTA */}
+                <Stack.Screen
+                    name="CriarConta"
+                    component={CriarConta}
+                />
 
-        <Stack.Screen
-          name="Configuracao"
-          component={Configuracao}
-        />
+                {/* NAVEGAÇÃO PRINCIPAL */}
+                <Stack.Screen
+                    name="Principal"
+                    component={TabNavigator}
+                />
 
-        <Stack.Screen
-          name="EditarPerfil"
-          component={EditarPerfil}
-        />
+                {/* NOTIFICAÇÕES */}
+                <Stack.Screen
+                    name="Notificacoes"
+                    component={Notificacao}
+                />
 
-        <Stack.Screen
-          name="DetalhePubli"
-          component={DetalhePubli}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+                {/* CONFIGURAÇÕES */}
+                <Stack.Screen
+                    name="Configuracao"
+                    component={Configuracao}
+                />
+
+                {/* EDITAR PERFIL */}
+                <Stack.Screen
+                    name="EditarPerfil"
+                    component={EditarPerfil}
+                />
+
+                {/* DETALHE DA PUBLICAÇÃO */}
+                <Stack.Screen
+                    name="DetalhePubli"
+                    component={DetalhePubli}
+                />
+
+            </Stack.Navigator>
+        </NavigationContainer>
+    );
 }

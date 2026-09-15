@@ -16,9 +16,9 @@ export const NotificacaoStyle = StyleSheet.create({
     },
 
     titulo: {
-        fontSize: 24,
+        fontSize: 28,
         fontWeight: "700",
-        color: "#24312A",
+        color: "#1F4F40",
     },
 
     // LISTA
@@ -30,7 +30,7 @@ export const NotificacaoStyle = StyleSheet.create({
     // CARD
     notificacaoCard: {
         width: "100%",
-        minHeight: 64,
+        minHeight: 70,
 
         borderWidth: 1,
         borderColor: "#E4DED2",
@@ -69,19 +69,19 @@ export const NotificacaoStyle = StyleSheet.create({
     nome: {
         fontSize: 12,
         fontWeight: "700",
-        color: "#24312A",
+        color: "#000000",
         marginRight: 8,
     },
 
     acao: {
         fontSize: 12,
         fontWeight: "500",
-        color: "#777777",
+        color: "#000000",
     },
 
     horario: {
         fontSize: 10,
-        color: "#999999",
+        color: "#000000",
         marginTop: 3,
     },
 
@@ -94,5 +94,4 @@ export const NotificacaoStyle = StyleSheet.create({
         marginTop: -5,
     },
 
-  
 });

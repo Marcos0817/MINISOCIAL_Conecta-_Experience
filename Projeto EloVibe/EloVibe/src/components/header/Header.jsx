@@ -9,18 +9,24 @@ import { HeaderStyle } from "./HeaderStyle";
 
 export default function Header({ navigation }) {
 
-    // IR PARA A TELA DE BOAS-VINDAS
     const handleLogoPress = () => {
         navigation.navigate("BoasVindas");
+    };
+
+    const handleSinoPress = () => {
+        navigation.navigate("Notificacoes");
     };
 
     return (
         <View style={HeaderStyle.header}>
 
             {/* LOGO */}
-            <TouchableOpacity onPress={handleLogoPress} activeOpacity={0.7}>
+            <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={handleLogoPress}
+            >
                 <Image
-                    source={require("../../../assets/LogoPequeno.png")}
+                    source={require("../../../assets/LogoPequeno02.png")}
                     style={HeaderStyle.logo}
                     resizeMode="contain"
                 />
@@ -29,6 +35,8 @@ export default function Header({ navigation }) {
             {/* SINO */}
             <TouchableOpacity
                 style={HeaderStyle.botaoSino}
+                activeOpacity={0.7}
+                onPress={handleSinoPress}
             >
                 <Image
                     source={require("../../../assets/SinoNotific.png")}

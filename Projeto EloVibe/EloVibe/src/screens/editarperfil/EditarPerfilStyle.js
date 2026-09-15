@@ -25,7 +25,7 @@ const EditarPerfilStyle = StyleSheet.create({
     titulo: {
         textAlign: "center",
 
-        fontSize: 19,
+        fontSize: 28,
 
         fontWeight: "700",
 
@@ -40,11 +40,11 @@ const EditarPerfilStyle = StyleSheet.create({
     // ==========================================
 
     fotoContainer: {
-        width: 65,
+        width: 85,
 
-        height: 65,
+        height: 85,
 
-        borderRadius: 33,
+        borderRadius: 50,
 
         alignSelf: "center",
 
@@ -59,7 +59,7 @@ const EditarPerfilStyle = StyleSheet.create({
 
         height: "100%",
 
-        borderRadius: 33,
+        borderRadius: 50,
     },
 
 
@@ -97,7 +97,7 @@ const EditarPerfilStyle = StyleSheet.create({
     // ==========================================
 
     label: {
-        fontSize: 13,
+        fontSize: 16,
 
         fontWeight: "600",
 
@@ -116,7 +116,7 @@ const EditarPerfilStyle = StyleSheet.create({
     input: {
         width: "100%",
 
-        height: 48,
+        height: 63,
 
         borderWidth: 1,
 
@@ -128,7 +128,7 @@ const EditarPerfilStyle = StyleSheet.create({
 
         paddingHorizontal: 17,
 
-        fontSize: 13,
+        fontSize: 16,
 
         color: "#315F53",
 
@@ -141,7 +141,7 @@ const EditarPerfilStyle = StyleSheet.create({
     // ==========================================
 
     labelUsuario: {
-        fontSize: 13,
+        fontSize: 16,
 
         fontWeight: "600",
 
@@ -158,7 +158,7 @@ const EditarPerfilStyle = StyleSheet.create({
     // ==========================================
 
     labelBio: {
-        fontSize: 13,
+        fontSize: 16,
 
         fontWeight: "600",
 
@@ -177,7 +177,7 @@ const EditarPerfilStyle = StyleSheet.create({
     bioInput: {
         width: "100%",
 
-        height: 76,
+        height: 101,
 
         borderWidth: 1,
 
@@ -191,7 +191,7 @@ const EditarPerfilStyle = StyleSheet.create({
 
         paddingTop: 10,
 
-        fontSize: 13,
+        fontSize: 16,
 
         color: "#315F53",
 
@@ -206,7 +206,7 @@ const EditarPerfilStyle = StyleSheet.create({
     botaoSalvar: {
         width: "100%",
 
-        height: 46,
+        height: 63,
 
         backgroundColor: "#205D4D",
 
@@ -223,7 +223,7 @@ const EditarPerfilStyle = StyleSheet.create({
 
         fontSize: 15,
 
-        fontWeight: "500",
+        fontWeight: "700",
     },
 
 });

@@ -8,14 +8,15 @@ import {
     Image,
 } from "react-native";
 
+import { Ionicons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
+
 import { TelaFeedStyle } from "./TelaFeedStyle";
 
 import Header from "../../components/header/Header";
-
 import Footer from "../../components/footer/Footer";
 
-
-export const TelaFeed = ({navigation}) => {
+export const TelaFeed = ({ navigation }) => {
 
     const [publicacoes, setPublicacoes] = useState([
         {
@@ -23,16 +24,55 @@ export const TelaFeed = ({navigation}) => {
             nome: "Galo Cego",
             horario: "Hoje às 10:30",
             texto: "Aprendendo React Native e Expo Router!",
+            foto: require("../../../assets/images-galocego.jpg"),
             curtidas: 25,
             comentarios: 4,
             curtida: false,
             salva: false,
         },
+
         {
             id: 2,
             nome: "Maria Oliveira",
             horario: "Hoje às 10:30",
             texto: "Meu primeiro projeto mobile ficou pronto!!",
+            foto: require("../../../assets/images-galocego.jpg"),
+            curtidas: 32,
+            comentarios: 8,
+            curtida: false,
+            salva: false,
+        },
+
+        {
+            id: 3,
+            nome: "João natalicio",
+            horario: "Hoje às 12:99",
+            texto: "Amo progamar",
+            foto: require("../../../assets/images-galocego.jpg"),
+            curtidas: 32,
+            comentarios: 8,
+            curtida: false,
+            salva: false,
+        },
+
+        {
+            id: 4,
+            nome: "Isis Ribeiro",
+            horario: "Hoje às 12:99",
+            foto: require("../../../assets/images-galocego.jpg"),
+            texto: "Amo progamar",
+            curtidas: 32,
+            comentarios: 8,
+            curtida: false,
+            salva: false,
+        },
+
+        {
+            id: 5,
+            nome: "Marcos Vinicius",
+            horario: "Hoje às 12:99",
+            foto: require("../../../assets/images-galocego.jpg"),
+            texto: "Amo progamar",
             curtidas: 32,
             comentarios: 8,
             curtida: false,
@@ -40,13 +80,23 @@ export const TelaFeed = ({navigation}) => {
         },
     ]);
 
+
+    // =====================================================
+    // CURTIR PUBLICAÇÃO
+    // =====================================================
+
     const curtirPublicacao = (id) => {
+
         setPublicacoes((lista) =>
             lista.map((publicacao) => {
+
                 if (publicacao.id === id) {
+
                     return {
                         ...publicacao,
+
                         curtida: !publicacao.curtida,
+
                         curtidas: publicacao.curtida
                             ? publicacao.curtidas - 1
                             : publicacao.curtidas + 1,
@@ -58,10 +108,18 @@ export const TelaFeed = ({navigation}) => {
         );
     };
 
+
+    // =====================================================
+    // SALVAR PUBLICAÇÃO
+    // =====================================================
+
     const salvarPublicacao = (id) => {
+
         setPublicacoes((lista) =>
             lista.map((publicacao) => {
+
                 if (publicacao.id === id) {
+
                     return {
                         ...publicacao,
                         salva: !publicacao.salva,
@@ -73,18 +131,21 @@ export const TelaFeed = ({navigation}) => {
         );
     };
 
+
     return (
-        <View style={TelaFeedStyle.container}>
+
+        <SafeAreaView style={TelaFeedStyle.container}>
+
+            {/* =====================================================
+                HEADER
+            ===================================================== */}
 
             <Header navigation={navigation} />
 
-            <Text style={TelaFeedStyle.titulo}>
-                
-            </Text>
 
-            <Text style={TelaFeedStyle.subtitulo}>
-             
-            </Text>
+            {/* =====================================================
+                LISTA
+            ===================================================== */}
 
             <ScrollView
                 style={TelaFeedStyle.scroll}
@@ -94,22 +155,33 @@ export const TelaFeed = ({navigation}) => {
 
                 {publicacoes.map((publicacao) => (
 
-                    <View
+                    <TouchableOpacity
                         key={publicacao.id}
                         style={TelaFeedStyle.post}
+                        activeOpacity={0.9}
+                        onPress={() =>
+                            navigation.navigate(
+                                "Publicacao",
+                                {
+                                    publicacao: publicacao,
+                                }
+                            )
+                        }
                     >
 
-                        {/* CABEÇALHO DA PUBLICAÇÃO */}
+                        {/* =====================================================
+                            CABEÇALHO DA PUBLICAÇÃO
+                        ===================================================== */}
 
                         <View style={TelaFeedStyle.postHeader}>
 
                             <View style={TelaFeedStyle.userInfo}>
 
-                                <View style={TelaFeedStyle.avatar}>
-                                    <Text style={TelaFeedStyle.avatarText}>
-                                        {publicacao.nome.charAt(0)}
-                                    </Text>
-                                </View>
+                                <Image
+                                    source={publicacao.foto}
+                                    style={TelaFeedStyle.avatar}
+                                    resizeMode="cover"
+                                />
 
                                 <View>
 
@@ -125,8 +197,14 @@ export const TelaFeed = ({navigation}) => {
 
                             </View>
 
+
+                            {/* TRÊS PONTOS */}
+
                             <TouchableOpacity
                                 style={TelaFeedStyle.menuButton}
+                                onPress={(event) =>
+                                    event.stopPropagation()
+                                }
                             >
 
                                 <Image
@@ -139,23 +217,35 @@ export const TelaFeed = ({navigation}) => {
 
                         </View>
 
-                        {/* TEXTO DA PUBLICAÇÃO */}
+
+                        {/* =====================================================
+                            TEXTO DA PUBLICAÇÃO
+                        ===================================================== */}
 
                         <Text style={TelaFeedStyle.postText}>
                             {publicacao.texto}
                         </Text>
 
-                        {/* AÇÕES */}
+
+                        {/* =====================================================
+                            AÇÕES
+                        ===================================================== */}
 
                         <View style={TelaFeedStyle.actions}>
 
-                            {/* CURTIR */}
+                            {/* =====================================================
+                                CURTIR
+                            ===================================================== */}
 
                             <TouchableOpacity
                                 style={TelaFeedStyle.action}
-                                onPress={() =>
-                                    curtirPublicacao(publicacao.id)
-                                }
+                                onPress={(event) => {
+
+                                    event.stopPropagation();
+
+                                    curtirPublicacao(publicacao.id);
+
+                                }}
                             >
 
                                 <Image
@@ -174,10 +264,25 @@ export const TelaFeed = ({navigation}) => {
 
                             </TouchableOpacity>
 
-                            {/* COMENTÁRIOS */}
+
+                            {/* =====================================================
+                                COMENTÁRIOS
+                            ===================================================== */}
 
                             <TouchableOpacity
                                 style={TelaFeedStyle.action}
+                                onPress={(event) => {
+
+                                    event.stopPropagation();
+
+                                    navigation.navigate(
+                                        "Publicacao",
+                                        {
+                                            publicacao: publicacao,
+                                        }
+                                    );
+
+                                }}
                             >
 
                                 <Image
@@ -192,33 +297,72 @@ export const TelaFeed = ({navigation}) => {
 
                             </TouchableOpacity>
 
-                            {/* SALVAR */}
+
+                            {/* =====================================================
+                                SALVAR
+                            ===================================================== */}
 
                             <TouchableOpacity
                                 style={TelaFeedStyle.saveButton}
-                                onPress={() =>
-                                    salvarPublicacao(publicacao.id)
-                                }
+                                onPress={(event) => {
+
+                                    event.stopPropagation();
+
+                                    salvarPublicacao(publicacao.id);
+
+                                }}
                             >
 
-                                <Image
-                                    source={require("../../../assets/Salvar.png")}
-                                    style={TelaFeedStyle.saveIcon}
-                                    resizeMode="contain"
+                                <Ionicons
+                                    name={
+                                        publicacao.salva
+                                            ? "bookmark"
+                                            : "bookmark-outline"
+                                    }
+                                    size={27}
+                                    color={
+                                        publicacao.salva
+                                            ? "#F56333"
+                                            : "#315F53"
+                                    }
                                 />
 
                             </TouchableOpacity>
 
                         </View>
 
-                    </View>
+                    </TouchableOpacity>
 
                 ))}
 
             </ScrollView>
-                
-                   
-           <Footer navigation={navigation}/>
-        </View>
+
+
+            {/* =====================================================
+                BOTÃO FLUTUANTE DE CRIAR PUBLICAÇÃO
+            ===================================================== */}
+
+            <TouchableOpacity
+                style={TelaFeedStyle.botaoCriarPublicacao}
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate("Criar")}
+            >
+
+                <Image
+                    source={require("../../../assets/ImageAddPubli.png")}
+                    style={TelaFeedStyle.imagemCriarPublicacao}
+                    resizeMode="contain"
+                />
+
+            </TouchableOpacity>
+
+
+            {/* =====================================================
+                FOOTER
+            ===================================================== */}
+
+            <Footer navigation={navigation} />
+
+        </SafeAreaView>
     );
 };

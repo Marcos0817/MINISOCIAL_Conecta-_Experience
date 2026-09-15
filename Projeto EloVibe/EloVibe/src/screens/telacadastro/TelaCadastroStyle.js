@@ -3,14 +3,30 @@ import { StyleSheet } from "react-native";
 export const TelaCadastroStyle = StyleSheet.create({
 
     // ==========================================
+    // SAFE AREA
+    // ==========================================
+
+    safeArea: {
+        flex: 1,
+        backgroundColor: "#FBF6EE",
+    },
+
+
+    // ==========================================
     // TELA
     // ==========================================
 
     container: {
         flex: 1,
         backgroundColor: "#FBF6EE",
+
         paddingHorizontal: 16,
         paddingTop: 34,
+    },
+
+    scrollContent: {
+        flexGrow: 1,
+        paddingBottom: 40,
     },
 
 
@@ -25,11 +41,12 @@ export const TelaCadastroStyle = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-between",
 
-        marginBottom: 17,
+        marginBottom: 26,
+        marginTop: 26,
     },
 
     headerTitle: {
-        fontSize: 20,
+        fontSize: 28,
         fontWeight: "700",
         color: "#1F4F40",
     },
@@ -56,7 +73,7 @@ export const TelaCadastroStyle = StyleSheet.create({
 
     input: {
         width: "100%",
-        height: 48,
+        height: 63,
 
         borderWidth: 1,
         borderColor: "#E3DED1",
@@ -70,7 +87,12 @@ export const TelaCadastroStyle = StyleSheet.create({
 
         backgroundColor: "#FBF6EE",
 
-        marginBottom: 13
+        marginBottom: 13,
+    },
+
+    inputFocado: {
+        borderColor: "#1F4F40",
+        borderWidth: 2,
     },
 
 
@@ -80,7 +102,7 @@ export const TelaCadastroStyle = StyleSheet.create({
 
     passwordContainer: {
         width: "100%",
-        height: 48,
+        height: 63,
 
         flexDirection: "row",
         alignItems: "center",
@@ -94,24 +116,29 @@ export const TelaCadastroStyle = StyleSheet.create({
         paddingRight: 10,
 
         backgroundColor: "#FBF6EE",
-         marginBottom: 13
+
+        marginBottom: 13,
     },
 
     passwordInput: {
         flex: 1,
 
-        height: 48,
+        height: 63,
 
         fontSize: 13,
         color: "#1F4F40",
+
+        paddingRight: 10,
     },
 
     eyeButton: {
-        width: 30,
-        height: 40,
+        width: 40,
+        height: 63,
 
         alignItems: "center",
         justifyContent: "center",
+
+        marginLeft: "auto",
     },
 
 
@@ -121,7 +148,7 @@ export const TelaCadastroStyle = StyleSheet.create({
 
     button: {
         width: "100%",
-        height: 48,
+        height: 63,
 
         backgroundColor: "#F56333",
 
