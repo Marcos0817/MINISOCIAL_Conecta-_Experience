@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
     View,
@@ -8,7 +8,8 @@ import {
     Image,
 } from "react-native";
 
-import { Ionicons } from "@expo/vector-icons";
+import api from "../../services/api";
+
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { TelaFeedStyle } from "./TelaFeedStyle";
@@ -16,69 +17,54 @@ import { TelaFeedStyle } from "./TelaFeedStyle";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 
+
 export const TelaFeed = ({ navigation }) => {
 
-    const [publicacoes, setPublicacoes] = useState([
-        {
-            id: 1,
-            nome: "Galo Cego",
-            horario: "Hoje às 10:30",
-            texto: "Aprendendo React Native e Expo Router!",
-            foto: require("../../../assets/images-galocego.jpg"),
-            curtidas: 25,
-            comentarios: 4,
-            curtida: false,
-            salva: false,
-        },
+    // =====================================================
+    // PUBLICAÇÕES
+    // =====================================================
 
-        {
-            id: 2,
-            nome: "Maria Oliveira",
-            horario: "Hoje às 10:30",
-            texto: "Meu primeiro projeto mobile ficou pronto!!",
-            foto: require("../../../assets/images-galocego.jpg"),
-            curtidas: 32,
-            comentarios: 8,
-            curtida: false,
-            salva: false,
-        },
+    const [publicacoes, setPublicacoes] = useState([]);
 
-        {
-            id: 3,
-            nome: "João natalicio",
-            horario: "Hoje às 12:99",
-            texto: "Amo progamar",
-            foto: require("../../../assets/images-galocego.jpg"),
-            curtidas: 32,
-            comentarios: 8,
-            curtida: false,
-            salva: false,
-        },
 
-        {
-            id: 4,
-            nome: "Isis Ribeiro",
-            horario: "Hoje às 12:99",
-            foto: require("../../../assets/images-galocego.jpg"),
-            texto: "Amo progamar",
-            curtidas: 32,
-            comentarios: 8,
-            curtida: false,
-            salva: false,
-        },
+    // =====================================================
+    // CARREGAR PUBLICAÇÕES DA API
+    // =====================================================
 
-        {
-            id: 5,
-            nome: "Marcos Vinicius",
-            horario: "Hoje às 12:99",
-            foto: require("../../../assets/images-galocego.jpg"),
-            texto: "Amo progamar",
-            curtidas: 32,
-            comentarios: 8,
-            curtida: false,
-            salva: false,
-        },
-    ]);
+    useEffect(() => {
+
+        const carregarPublicacoes = async () => {
+
+            try {
+
+                const resposta = await api.get("/publicacoes");
+
+                const publicacoesApi = resposta.data.map((publicacao) => ({
+                    ...publicacao,
+
+                    // Começam como não curtidas
+                    curtida: false,
+
+                    // Começam como não salvas
+                    salva: false,
+                }));
+
+                setPublicacoes(publicacoesApi);
+
+            } catch (erro) {
+
+                console.log(
+                    "Erro ao carregar publicações:",
+                    erro
+                );
+
+            }
+
+        };
+
+        carregarPublicacoes();
+
+    }, []);
 
 
     // =====================================================
@@ -88,6 +74,7 @@ export const TelaFeed = ({ navigation }) => {
     const curtirPublicacao = (id) => {
 
         setPublicacoes((lista) =>
+
             lista.map((publicacao) => {
 
                 if (publicacao.id === id) {
@@ -101,11 +88,15 @@ export const TelaFeed = ({ navigation }) => {
                             ? publicacao.curtidas - 1
                             : publicacao.curtidas + 1,
                     };
+
                 }
 
                 return publicacao;
+
             })
+
         );
+
     };
 
 
@@ -116,6 +107,7 @@ export const TelaFeed = ({ navigation }) => {
     const salvarPublicacao = (id) => {
 
         setPublicacoes((lista) =>
+
             lista.map((publicacao) => {
 
                 if (publicacao.id === id) {
@@ -124,13 +116,39 @@ export const TelaFeed = ({ navigation }) => {
                         ...publicacao,
                         salva: !publicacao.salva,
                     };
+
                 }
 
                 return publicacao;
+
             })
+
         );
+
     };
 
+
+    // =====================================================
+    // IMAGEM DA PUBLICAÇÃO
+    // =====================================================
+
+    const pegarImagem = (foto) => {
+
+        if (foto === "images-galocego.jpg") {
+
+            return require("../../../assets/images-galocego.jpg");
+
+        }
+
+        // Imagem padrão caso não encontre
+        return require("../../../assets/images-galocego.jpg");
+
+    };
+
+
+    // =====================================================
+    // TELA
+    // =====================================================
 
     return (
 
@@ -178,7 +196,7 @@ export const TelaFeed = ({ navigation }) => {
                             <View style={TelaFeedStyle.userInfo}>
 
                                 <Image
-                                    source={publicacao.foto}
+                                    source={pegarImagem(publicacao.foto)}
                                     style={TelaFeedStyle.avatar}
                                     resizeMode="cover"
                                 />
@@ -313,18 +331,16 @@ export const TelaFeed = ({ navigation }) => {
                                 }}
                             >
 
-                                <Ionicons
-                                    name={
-                                        publicacao.salva
-                                            ? "bookmark"
-                                            : "bookmark-outline"
-                                    }
-                                    size={27}
-                                    color={
-                                        publicacao.salva
-                                            ? "#F56333"
-                                            : "#315F53"
-                                    }
+                                <Image
+                                    source={require("../../../assets/Salvar.png")}
+                                    style={[
+                                        TelaFeedStyle.saveIcon,
+
+                                        publicacao.salva && {
+                                            tintColor: "#F56333",
+                                        },
+                                    ]}
+                                    resizeMode="contain"
                                 />
 
                             </TouchableOpacity>
@@ -364,5 +380,7 @@ export const TelaFeed = ({ navigation }) => {
             <Footer navigation={navigation} />
 
         </SafeAreaView>
+
     );
+
 };

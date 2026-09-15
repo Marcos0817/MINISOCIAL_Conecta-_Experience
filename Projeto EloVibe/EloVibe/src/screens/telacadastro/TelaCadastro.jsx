@@ -1,20 +1,15 @@
 import React, { useState } from "react";
-
 import {
     View,
     Text,
     TextInput,
     TouchableOpacity,
-    KeyboardAvoidingView,
-    ScrollView,
-    Platform,
     Alert,
 } from "react-native";
-
 import { Ionicons } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 import { TelaCadastroStyle } from "./TelaCadastroStyle";
+import api from "../../services/api";
 
 export default function CriarContaScreen({ navigation }) {
 
@@ -23,233 +18,173 @@ export default function CriarContaScreen({ navigation }) {
     const [senha, setSenha] = useState("");
     const [mostrarSenha, setMostrarSenha] = useState(false);
 
-    // Estados para saber qual input está selecionado
-    const [nomeFocado, setNomeFocado] = useState(false);
-    const [emailFocado, setEmailFocado] = useState(false);
-    const [senhaFocada, setSenhaFocada] = useState(false);
+    const criarConta = async () => {
 
-
-    // =====================================================
-    // CRIAR CONTA
-    // =====================================================
-
-    const handleCriarConta = () => {
-
-        // Verifica se todos os campos foram preenchidos
-        if (
-            nome.trim() === "" ||
-            email.trim() === "" ||
-            senha.trim() === ""
-        ) {
-
+        // Verifica se os campos estão preenchidos
+        if (!nome.trim() || !email.trim() || !senha.trim()) {
             Alert.alert(
-                "Campos obrigatórios",
-                "Preencha todos os campos para criar sua conta."
+                "Atenção",
+                "Preencha todos os campos."
             );
-
             return;
         }
 
-        // Se todos os campos estiverem preenchidos
-        console.log("Criando conta:", nome, email, senha);
+        try {
 
-        // Mantendo a navegação original
-        navigation.navigate("Login");
+            // Verifica se já existe um usuário com esse e-mail
+            const resposta = await api.get("/usuarios");
+
+            const usuarioExistente = resposta.data.find(
+                (usuario) =>
+                    usuario.email.toLowerCase() === email.trim().toLowerCase()
+            );
+
+            if (usuarioExistente) {
+                Alert.alert(
+                    "E-mail já cadastrado",
+                    "Já existe uma conta utilizando esse e-mail."
+                );
+                return;
+            }
+
+            // Cadastra o novo usuário
+            await api.post("/usuarios", {
+                nome: nome.trim(),
+                email: email.trim(),
+                senha: senha,
+                foto: "images-galocego.jpg",
+            });
+
+            Alert.alert(
+                "Cadastro realizado!",
+                "Sua conta foi criada com sucesso.",
+                [
+                    {
+                        text: "OK",
+                        onPress: () => navigation.navigate("Login"),
+                    },
+                ]
+            );
+
+        } catch (erro) {
+
+            console.log("Erro ao cadastrar usuário:", erro);
+
+            Alert.alert(
+                "Erro",
+                "Não foi possível realizar o cadastro. Verifique se a API está funcionando."
+            );
+        }
     };
 
-
     return (
-        <SafeAreaView style={TelaCadastroStyle.safeArea}>
+        <View style={TelaCadastroStyle.container}>
 
-            <KeyboardAvoidingView
-                style={{ flex: 1 }}
-                behavior={
-                    Platform.OS === "ios"
-                        ? "padding"
-                        : "height"
-                }
-                keyboardVerticalOffset={
-                    Platform.OS === "ios"
-                        ? 0
-                        : 20
-                }
-            >
+            {/* HEADER */}
+            <View style={TelaCadastroStyle.header}>
 
-                <ScrollView
-                    contentContainerStyle={TelaCadastroStyle.scrollContent}
-                    keyboardShouldPersistTaps="handled"
-                    showsVerticalScrollIndicator={false}
+                <TouchableOpacity
+                    onPress={() => navigation.goBack()}
                 >
+                    <Ionicons
+                        name="chevron-back"
+                        size={26}
+                        color="#1E3A34"
+                    />
+                </TouchableOpacity>
 
-                    <View style={TelaCadastroStyle.container}>
+                <Text style={TelaCadastroStyle.headerTitle}>
+                    Criar conta
+                </Text>
 
-                        {/* ==========================================
-                            HEADER
-                        ========================================== */}
+                <View style={{ width: 26 }} />
 
-                        <View style={TelaCadastroStyle.header}>
+            </View>
 
-                            <TouchableOpacity
-                                onPress={() => navigation.goBack()}
-                            >
-                                <Ionicons
-                                    name="chevron-back"
-                                    size={26}
-                                    color="#1E3A34"
-                                />
-                            </TouchableOpacity>
+            {/* NOME */}
+            <Text style={TelaCadastroStyle.label}>
+                Nome completo
+            </Text>
 
-                            <Text style={TelaCadastroStyle.headerTitle}>
-                                Criar conta
-                            </Text>
+            <TextInput
+                style={TelaCadastroStyle.input}
+                placeholder="Digite seu nome"
+                placeholderTextColor="#999"
+                value={nome}
+                onChangeText={setNome}
+            />
 
-                            <View style={{ width: 26 }} />
+            {/* E-MAIL */}
+            <Text style={TelaCadastroStyle.label}>
+                E-mail
+            </Text>
 
-                        </View>
+            <TextInput
+                style={TelaCadastroStyle.input}
+                placeholder="Digite seu e-mail"
+                placeholderTextColor="#999"
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoCorrect={false}
+            />
 
+            {/* SENHA */}
+            <Text style={TelaCadastroStyle.label}>
+                Senha
+            </Text>
 
-                        {/* ==========================================
-                            NOME
-                        ========================================== */}
+            <View style={TelaCadastroStyle.passwordContainer}>
 
-                        <Text style={TelaCadastroStyle.label}>
-                            Nome
-                        </Text>
+                <TextInput
+                    style={TelaCadastroStyle.passwordInput}
+                    placeholder="Crie uma senha"
+                    placeholderTextColor="#999"
+                    value={senha}
+                    onChangeText={setSenha}
+                    secureTextEntry={!mostrarSenha}
+                />
 
-                        <TextInput
-                            style={[
-                                TelaCadastroStyle.input,
-                                nomeFocado &&
-                                TelaCadastroStyle.inputFocado
-                            ]}
-                            placeholder="Digite seu nome"
-                            placeholderTextColor="#999"
-                            value={nome}
-                            onChangeText={setNome}
-                            onFocus={() => setNomeFocado(true)}
-                            onBlur={() => setNomeFocado(false)}
-                            returnKeyType="next"
-                        />
+                <TouchableOpacity
+                    style={TelaCadastroStyle.eyeButton}
+                    onPress={() => setMostrarSenha(!mostrarSenha)}
+                >
+                    <Ionicons
+                        name={
+                            mostrarSenha
+                                ? "eye-off-outline"
+                                : "eye-outline"
+                        }
+                        size={23}
+                        color="#356B5B"
+                    />
+                </TouchableOpacity>
 
+            </View>
 
-                        {/* ==========================================
-                            E-MAIL
-                        ========================================== */}
+            {/* BOTÃO CADASTRAR */}
+            <TouchableOpacity
+                style={TelaCadastroStyle.button}
+                onPress={criarConta}
+            >
+                <Text style={TelaCadastroStyle.buttonText}>
+                    Criar conta
+                </Text>
+            </TouchableOpacity>
 
-                        <Text style={TelaCadastroStyle.label}>
-                            E-mail
-                        </Text>
+            {/* LINK PARA LOGIN */}
+            <TouchableOpacity
+                onPress={() => navigation.navigate("Login")}
+            >
+                <Text style={TelaCadastroStyle.loginText}>
+                    Já possui uma conta?{" "}
+                    <Text style={TelaCadastroStyle.loginLink}>
+                        Entrar
+                    </Text>
+                </Text>
+            </TouchableOpacity>
 
-                        <TextInput
-                            style={[
-                                TelaCadastroStyle.input,
-                                emailFocado &&
-                                TelaCadastroStyle.inputFocado
-                            ]}
-                            placeholder="Digite seu e-mail"
-                            placeholderTextColor="#999"
-                            value={email}
-                            onChangeText={setEmail}
-                            keyboardType="email-address"
-                            autoCapitalize="none"
-                            onFocus={() => setEmailFocado(true)}
-                            onBlur={() => setEmailFocado(false)}
-                            returnKeyType="next"
-                        />
-
-
-                        {/* ==========================================
-                            SENHA
-                        ========================================== */}
-
-                        <Text style={TelaCadastroStyle.label}>
-                            Senha
-                        </Text>
-
-                        <View
-                            style={[
-                                TelaCadastroStyle.passwordContainer,
-                                senhaFocada &&
-                                TelaCadastroStyle.inputFocado
-                            ]}
-                        >
-
-                            <TextInput
-                                style={TelaCadastroStyle.passwordInput}
-                                placeholder="Digite sua senha"
-                                placeholderTextColor="#999"
-                                value={senha}
-                                onChangeText={setSenha}
-                                secureTextEntry={!mostrarSenha}
-                                onFocus={() => setSenhaFocada(true)}
-                                onBlur={() => setSenhaFocada(false)}
-                                returnKeyType="done"
-                            />
-
-                            <TouchableOpacity
-                                style={TelaCadastroStyle.eyeButton}
-                                onPress={() =>
-                                    setMostrarSenha(!mostrarSenha)
-                                }
-                            >
-
-                                <Ionicons
-                                    name={
-                                        mostrarSenha
-                                            ? "eye-off-outline"
-                                            : "eye-outline"
-                                    }
-                                    size={24}
-                                    color="#1E3A34"
-                                />
-
-                            </TouchableOpacity>
-
-                        </View>
-
-
-                        {/* ==========================================
-                            BOTÃO
-                        ========================================== */}
-
-                        <TouchableOpacity
-                            style={TelaCadastroStyle.button}
-                            onPress={handleCriarConta}
-                            activeOpacity={0.8}
-                        >
-
-                            <Text style={TelaCadastroStyle.buttonText}>
-                                Criar conta
-                            </Text>
-
-                        </TouchableOpacity>
-
-
-                        {/* ==========================================
-                            LOGIN
-                        ========================================== */}
-
-                        <Text style={TelaCadastroStyle.loginText}>
-
-                            Já tem uma conta?{" "}
-
-                            <Text
-                                style={TelaCadastroStyle.loginLink}
-                                onPress={() =>
-                                    navigation.navigate("Login")
-                                }
-                            >
-                                Entrar
-                            </Text>
-
-                        </Text>
-
-                    </View>
-
-                </ScrollView>
-
-            </KeyboardAvoidingView>
-
-        </SafeAreaView>
+        </View>
     );
 }

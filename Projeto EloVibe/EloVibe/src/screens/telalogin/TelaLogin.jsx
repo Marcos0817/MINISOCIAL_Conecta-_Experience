@@ -16,6 +16,8 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { LoginStyle } from "./TelaLoginStyle";
 
+import api from "../../services/api";
+
 
 export default function Login({ navigation }) {
 
@@ -32,7 +34,7 @@ export default function Login({ navigation }) {
     // ENTRAR
     // =====================================================
 
-    const handleEntrar = () => {
+    const handleEntrar = async () => {
 
         // Verifica se os campos estão preenchidos
         if (email.trim() === "" || senha.trim() === "") {
@@ -45,8 +47,64 @@ export default function Login({ navigation }) {
             return;
         }
 
-        // Mantendo a navegação original
-        navigation.navigate("Inicio");
+        try {
+
+            // Busca os usuários cadastrados
+            const resposta = await api.get("/usuarios");
+
+            // Procura o usuário pelo e-mail e senha
+            const usuarioEncontrado = resposta.data.find(
+                (usuario) =>
+                    usuario.email.toLowerCase() ===
+                        email.trim().toLowerCase() &&
+                    usuario.senha === senha
+            );
+
+
+            // =====================================================
+            // USUÁRIO ENCONTRADO
+            // =====================================================
+
+            if (usuarioEncontrado) {
+
+                Alert.alert(
+                    "Login realizado!",
+                    `Bem-vindo, ${usuarioEncontrado.nome}!`,
+                    [
+                        {
+                            text: "Entrar",
+                            onPress: () => {
+                                navigation.navigate("Inicio");
+                            },
+                        },
+                    ]
+                );
+
+                return;
+            }
+
+
+            // =====================================================
+            // USUÁRIO NÃO ENCONTRADO
+            // =====================================================
+
+            Alert.alert(
+                "Login inválido",
+                "E-mail ou senha incorretos."
+            );
+
+        } catch (erro) {
+
+            console.log(
+                "Erro ao realizar login:",
+                erro
+            );
+
+            Alert.alert(
+                "Erro",
+                "Não foi possível realizar o login. Verifique se a API está funcionando."
+            );
+        }
     };
 
 
