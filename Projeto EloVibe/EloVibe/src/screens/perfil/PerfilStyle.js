@@ -106,7 +106,7 @@ const PerfilStyle = StyleSheet.create({
         justifyContent: "center",
 
         zIndex: 10,
-       
+
     },
 
 
@@ -148,6 +148,28 @@ const PerfilStyle = StyleSheet.create({
         marginBottom: 22,
     },
 
+
+    // =====================================================
+    // SAIR
+    // =====================================================
+
+    sair: {
+        position: "absolute",
+
+        left: 12,
+
+        top: 7,
+
+        width: 35,
+
+        height: 35,
+
+        alignItems: "center",
+
+        justifyContent: "center",
+
+        zIndex: 10,
+    },
 
     // =====================================================
     // ESTATÍSTICAS
@@ -299,7 +321,7 @@ const PerfilStyle = StyleSheet.create({
         backgroundColor: "#222222",
 
         marginBottom: 3,
-        
+
     },
 
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 
 import {
     View,
@@ -10,77 +10,337 @@ import {
 
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useFocusEffect } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import PerfilStyle from "./PerfilStyle";
 
 import Footer from "../../components/footer/Footer";
+import api from "../../services/api";
 
 
-export default function TelaPerfil({ navigation }) {
+const TelaPerfil = ({ navigation }) => {
 
-    const publicacoes = [
-        require("../../../assets/Salvar.png"),
-        require("../../../assets/Salvar.png"),
-        require("../../../assets/Salvar.png"),
-        require("../../../assets/Salvar.png"),
-        require("../../../assets/Salvar.png"),
-        require("../../../assets/Salvar.png"),
-    ];
+    const [usuario, setUsuario] = useState({
+        id: "",
+        nome: "",
+        email: "",
+        usuario: "",
+        bio: "",
+        foto: "",
+    });
+
+    const [publicacoes, setPublicacoes] = useState([]);
+
+
+    // =====================================================
+    // CARREGAR USUÁRIO E PUBLICAÇÕES
+    // =====================================================
+
+    const carregarUsuario = async () => {
+
+        try {
+
+            const usuarioId =
+                await AsyncStorage.getItem("usuarioId");
+
+            console.log(
+                "ID DO USUÁRIO LOGADO:",
+                usuarioId
+            );
+
+
+            if (!usuarioId) {
+
+                console.log(
+                    "ID do usuário não encontrado."
+                );
+
+                return;
+            }
+
+
+            // =================================================
+            // BUSCAR USUÁRIO
+            // =================================================
+
+            const respostaUsuario =
+                await api.get(
+                    `/usuarios/${usuarioId}`
+                );
+
+            console.log(
+                "USUÁRIO:",
+                respostaUsuario.data
+            );
+
+
+            setUsuario(
+                respostaUsuario.data
+            );
+
+
+            // =================================================
+            // BUSCAR PUBLICAÇÕES
+            // =================================================
+
+            const respostaPublicacoes =
+                await api.get(
+                    "/publicacoes"
+                );
+
+
+            console.log(
+                "TODAS AS PUBLICAÇÕES:",
+                respostaPublicacoes.data
+            );
+
+
+            // =================================================
+            // FILTRAR PUBLICAÇÕES DO USUÁRIO
+            // =================================================
+
+            const minhasPublicacoes =
+                respostaPublicacoes.data.filter(
+                    (publicacao) => {
+
+                        return (
+                            String(
+                                publicacao.usuarioId
+                            ) ===
+                            String(usuarioId)
+                        );
+
+                    }
+                );
+
+
+            console.log(
+                "MINHAS PUBLICAÇÕES:",
+                minhasPublicacoes
+            );
+
+
+            // =================================================
+            // SALVAR PUBLICAÇÕES
+            // =================================================
+
+            setPublicacoes(
+                minhasPublicacoes
+            );
+
+        } catch (erro) {
+
+            console.log(
+                "ERRO AO CARREGAR PERFIL:",
+                erro.response?.data ||
+                erro.message
+            );
+
+        }
+
+    };
+
+
+    // =====================================================
+    // ATUALIZAR AO VOLTAR PARA O PERFIL
+    // =====================================================
+
+    useFocusEffect(
+
+        useCallback(() => {
+
+            carregarUsuario();
+
+        }, [])
+
+    );
+
+
+    // =====================================================
+    // LOGOUT
+    // =====================================================
+
+    const handleLogout = async () => {
+
+        try {
+
+            await AsyncStorage.removeItem(
+                "usuarioId"
+            );
+
+            await AsyncStorage.removeItem(
+                "nomeUsuario"
+            );
+
+            await AsyncStorage.removeItem(
+                "emailUsuario"
+            );
+
+
+            navigation.reset({
+                index: 0,
+                routes: [
+                    {
+                        name: "BoasVindas"
+                    }
+                ],
+            });
+
+        } catch (erro) {
+
+            console.log(
+                "Erro ao fazer logout:",
+                erro
+            );
+
+        }
+
+    };
+
+
+    // =====================================================
+    // ABRIR PUBLICAÇÃO
+    // =====================================================
+
+    const abrirPublicacao = (id) => {
+
+        navigation.navigate(
+            "Publicacao",
+            {
+                publicacaoId: id
+            }
+        );
+
+    };
+
+
+    // =====================================================
+    // PEGAR IMAGEM
+    // =====================================================
+
+    const pegarImagem = (foto) => {
+
+        if (
+            foto === "images-galocego.jpg"
+        ) {
+
+            return require(
+                "../../../assets/images-galocego.jpg"
+            );
+
+        }
+
+        return {
+            uri: foto
+        };
+
+    };
 
 
     return (
-        <SafeAreaView style={PerfilStyle.container}>
 
-            {/* CONTEÚDO DO PERFIL */}
+        <SafeAreaView
+            style={PerfilStyle.container}
+        >
 
             <ScrollView
+                contentContainerStyle={
+                    PerfilStyle.scrollContent
+                }
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={PerfilStyle.scrollContent}
             >
 
-                {/* CONFIGURAÇÕES */}
+                {/* =====================================================
+                    BOTÃO SAIR
+                ===================================================== */}
 
                 <TouchableOpacity
-                    style={PerfilStyle.configuracao}
-                    onPress={() => navigation.navigate("Configuracao")}
+                    style={PerfilStyle.sair}
+                    onPress={handleLogout}
                 >
+
+                    <Ionicons
+                        name="log-out-outline"
+                        size={27}
+                        color="#FF6B00"
+                    />
+
+                </TouchableOpacity>
+
+
+                {/* =====================================================
+                    CONFIGURAÇÕES
+                ===================================================== */}
+
+                <TouchableOpacity
+                    style={
+                        PerfilStyle.configuracao
+                    }
+                >
+
                     <Ionicons
                         name="settings-outline"
                         size={25}
                         color="#315F53"
                     />
+
                 </TouchableOpacity>
 
 
-                {/* TÍTULO */}
+                {/* =====================================================
+                    TÍTULO
+                ===================================================== */}
 
-                <Text style={PerfilStyle.titulo}>
-                    Perfil
+                <Text
+                    style={PerfilStyle.titulo}
+                >
+                    Meu Perfil
                 </Text>
 
 
-                {/* FOTO DO PERFIL */}
+                {/* =====================================================
+                    FOTO DE PERFIL
+                ===================================================== */}
 
-                <View style={PerfilStyle.fotoContainer}>
+                <View
+                    style={
+                        PerfilStyle.fotoContainer
+                    }
+                >
 
                     <Image
-                        source={require("../../../assets/images-galocego.jpg")}
-                        style={PerfilStyle.foto}
+                        source={
+                            usuario.foto
+                                ? {
+                                    uri: usuario.foto
+                                }
+                                : require(
+                                    "../../../assets/images-galocego.jpg"
+                                )
+                        }
+                        style={
+                            PerfilStyle.foto
+                        }
                         resizeMode="cover"
                     />
 
 
-                    {/* BOTÃO EDITAR */}
-
                     <TouchableOpacity
-                        style={PerfilStyle.botaoEditar}
-                        onPress={() => navigation.navigate("EditarPerfil")}
+                        style={
+                            PerfilStyle.botaoEditar
+                        }
+                        onPress={() =>
+                            navigation.navigate(
+                                "EditarPerfil"
+                            )
+                        }
                     >
 
-                        <Image
-                            source={require("../../../assets/EditarPerfil.png")}
-                            style={PerfilStyle.imagemEditar}
-                            resizeMode="contain"
+                        <Ionicons
+                            name="create-outline"
+                            size={18}
+                            color="#315F53"
                         />
 
                     </TouchableOpacity>
@@ -88,57 +348,113 @@ export default function TelaPerfil({ navigation }) {
                 </View>
 
 
-                {/* NOME */}
+                {/* =====================================================
+                    NOME
+                ===================================================== */}
 
-                <Text style={PerfilStyle.nome}>
-                    Galo Cego
+                <Text
+                    style={PerfilStyle.nome}
+                >
+                    {
+                        usuario.nome ||
+                        "Nome do usuário"
+                    }
                 </Text>
 
 
-                {/* E-MAIL */}
+                {/* =====================================================
+                    EMAIL
+                ===================================================== */}
 
-                <Text style={PerfilStyle.email}>
-                    GaloCego124@gmail.com
+                <Text
+                    style={PerfilStyle.email}
+                >
+                    {
+                        usuario.email ||
+                        "E-mail não informado"
+                    }
                 </Text>
 
 
-                {/* ESTATÍSTICAS */}
+                {/* =====================================================
+                    ESTATÍSTICAS
+                ===================================================== */}
 
-                <View style={PerfilStyle.estatisticas}>
+                <View
+                    style={
+                        PerfilStyle.estatisticas
+                    }
+                >
 
-                    <View style={PerfilStyle.estatistica}>
+                    <View
+                        style={
+                            PerfilStyle.estatistica
+                        }
+                    >
 
-                        <Text style={PerfilStyle.numero}>
-                            12
+                        <Text
+                            style={
+                                PerfilStyle.numero
+                            }
+                        >
+                            {publicacoes.length}
                         </Text>
 
-                        <Text style={PerfilStyle.label}>
+                        <Text
+                            style={
+                                PerfilStyle.label
+                            }
+                        >
                             Publicações
                         </Text>
 
                     </View>
 
 
-                    <View style={PerfilStyle.estatistica}>
+                    <View
+                        style={
+                            PerfilStyle.estatistica
+                        }
+                    >
 
-                        <Text style={PerfilStyle.numero}>
-                            150
+                        <Text
+                            style={
+                                PerfilStyle.numero
+                            }
+                        >
+                            1900
                         </Text>
 
-                        <Text style={PerfilStyle.label}>
+                        <Text
+                            style={
+                                PerfilStyle.label
+                            }
+                        >
                             Seguidores
                         </Text>
 
                     </View>
 
 
-                    <View style={PerfilStyle.estatistica}>
+                    <View
+                        style={
+                            PerfilStyle.estatistica
+                        }
+                    >
 
-                        <Text style={PerfilStyle.numero}>
-                            80
+                        <Text
+                            style={
+                                PerfilStyle.numero
+                            }
+                        >
+                            6767
                         </Text>
 
-                        <Text style={PerfilStyle.label}>
+                        <Text
+                            style={
+                                PerfilStyle.label
+                            }
+                        >
                             Seguindo
                         </Text>
 
@@ -147,70 +463,131 @@ export default function TelaPerfil({ navigation }) {
                 </View>
 
 
-                {/* BIO */}
+                {/* =====================================================
+                    BIO
+                ===================================================== */}
 
-                <Text style={PerfilStyle.bio}>
-                    Desenvolvedor Sênior e entusiasta de tecnologia,
-                    {"\n"}
-                    apaixonado em compartilhar conhecimentos
-                    {"\n"}
-                    vindos de Pernambuco !
+                <Text
+                    style={PerfilStyle.bio}
+                >
+                    {
+                        usuario.bio
+                            ? usuario.bio
+                            : "Nenhuma biografia adicionada."
+                    }
                 </Text>
 
 
-                {/* ABAS */}
+                {/* =====================================================
+                    ABAS
+                ===================================================== */}
 
-                <View style={PerfilStyle.abas}>
+                <View
+                    style={PerfilStyle.abas}
+                >
 
-                    <TouchableOpacity style={PerfilStyle.aba}>
+                    <View
+                        style={PerfilStyle.aba}
+                    >
 
                         <Ionicons
-                            name="grid"
-                            size={23}
+                            name="grid-outline"
+                            size={22}
                             color="#315F53"
                         />
 
-                    </TouchableOpacity>
+                    </View>
 
 
-                    <TouchableOpacity style={PerfilStyle.aba}>
+                    <View
+                        style={PerfilStyle.aba}
+                    >
 
                         <Ionicons
                             name="bookmark-outline"
-                            size={25}
-                            color="#315F53"
+                            size={22}
+                            color="#777777"
                         />
 
-                    </TouchableOpacity>
+                    </View>
 
                 </View>
 
 
-                {/* LINHA DAS ABAS */}
+                {/* =====================================================
+                    LINHA DAS ABAS
+                ===================================================== */}
 
-                <View style={PerfilStyle.linhaAbas}>
+                <View
+                    style={
+                        PerfilStyle.linhaAbas
+                    }
+                />
 
-                    <View style={PerfilStyle.linhaAtiva} />
+                <View
+                    style={
+                        PerfilStyle.linhaAtiva
+                    }
+                />
 
-                </View>
 
+                {/* =====================================================
+                    PUBLICAÇÕES
+                ===================================================== */}
 
-                {/* PUBLICAÇÕES */}
+                <View
+                    style={
+                        PerfilStyle.gradePublicacoes
+                    }
+                >
 
-                <View style={PerfilStyle.grade}>
-
-                    {publicacoes.map((imagem, index) => (
+                    {publicacoes.map(
+                        (publicacao) => (
 
                         <TouchableOpacity
-                            key={index}
-                            style={PerfilStyle.publicacao}
+                            key={publicacao.id}
+                            style={
+                                PerfilStyle.cardPublicacao
+                            }
+                            activeOpacity={0.8}
+                            onPress={() =>
+                                abrirPublicacao(
+                                    publicacao.id
+                                )
+                            }
                         >
 
-                            <Image
-                                source={imagem}
-                                style={PerfilStyle.imagemPublicacao}
-                                resizeMode="cover"
-                            />
+                            {publicacao.foto ? (
+
+                                <Image
+                                    source={
+                                        pegarImagem(
+                                            publicacao.foto
+                                        )
+                                    }
+                                    style={
+                                        PerfilStyle.imagemPublicacao
+                                    }
+                                    resizeMode="cover"
+                                />
+
+                            ) : (
+
+                                <View
+                                    style={
+                                        PerfilStyle.publicacaoSemImagem
+                                    }
+                                >
+
+                                    <Ionicons
+                                        name="image-outline"
+                                        size={30}
+                                        color="#999999"
+                                    />
+
+                                </View>
+
+                            )}
 
                         </TouchableOpacity>
 
@@ -218,13 +595,21 @@ export default function TelaPerfil({ navigation }) {
 
                 </View>
 
+
             </ScrollView>
 
 
-            {/* FOOTER FIXO */}
+            {/* =====================================================
+                FOOTER
+            ===================================================== */}
 
-            <Footer navigation={navigation} />
+            <Footer
+                navigation={navigation}
+            />
 
         </SafeAreaView>
     );
-}
+};
+
+
+export default TelaPerfil;

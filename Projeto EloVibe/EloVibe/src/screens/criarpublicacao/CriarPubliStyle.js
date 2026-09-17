@@ -2,149 +2,299 @@ import { StyleSheet } from "react-native";
 
 export const CriarPubliStyle = StyleSheet.create({
 
+    // =====================================================
+    // CONTAINER
+    // =====================================================
+
     container: {
         flex: 1,
         backgroundColor: "#FBF6EE",
     },
 
 
+    // =====================================================
+    // SCROLL
+    // =====================================================
+
+    scrollContent: {
+        paddingBottom: 30,
+    },
+
+
+    // =====================================================
     // HEADER
+    // =====================================================
 
     header: {
         height: 105,
         width: "100%",
+
         justifyContent: "center",
         alignItems: "center",
+
         position: "relative",
+    },
+
+    title: {
+        fontSize: 28,
+        fontWeight: "700",
+
+        color: "#3A6152",
+
+        marginTop: 20,
     },
 
     closeButton: {
         position: "absolute",
+
         top: 24,
         left: 20,
-        height: 40,
+
         width: 40,
+        height: 40,
+
+        justifyContent: "center",
+        alignItems: "center",
     },
 
-    fechar: {
-        fontSize: 40,
+    closeText: {
+        fontSize: 30,
         fontWeight: "600",
+
         color: "#3A6152",
     },
 
-    titulo: {
-        fontSize: 28,
-        fontWeight: "700",
-        color: "#3A6152",
-        marginTop: 46,
-    },
 
+    // =====================================================
+    // PERGUNTA
+    // =====================================================
 
-    // CONTEÚDO
-
-    conteudo: {
-        flex: 1,
-        paddingHorizontal: 15,
-    },
-
-    pergunta: {
+    question: {
         fontSize: 17,
         fontWeight: "500",
+
         color: "#3A6152",
 
         marginTop: 30,
         marginBottom: 17,
+
+        marginHorizontal: 20,
     },
 
 
-    // TEXT INPUT
+    // =====================================================
+    // CAMPO DE TEXTO
+    // =====================================================
 
-    textoArea: {
-        width: "100%",
+    textInput: {
+        width: "90%",
         height: 185,
+
+        alignSelf: "center",
 
         borderWidth: 1,
         borderColor: "#E4DED2",
+
         borderRadius: 8,
 
         backgroundColor: "#FBF6EE",
 
-        paddingHorizontal: 10,
-        paddingTop: 8,
+        paddingHorizontal: 12,
+        paddingTop: 12,
 
-        fontSize: 20,
+        fontSize: 18,
+
         color: "#24312A",
 
         textAlignVertical: "top",
     },
 
-    contador: {
-        position: "absolute",
 
-        right: 54,
-        top: 227,
+    // =====================================================
+    // CONTADOR
+    // =====================================================
 
-        fontSize: 20,
+    counter: {
+        alignSelf: "flex-end",
+
+        marginRight: 24,
+        marginTop: 6,
+
+        fontSize: 14,
+
         color: "#888888",
     },
 
 
+    // =====================================================
     // OPÇÕES
+    // =====================================================
 
-    opcoes: {
+    options: {
+        width: "90%",
+
+        alignSelf: "center",
+
         flexDirection: "row",
+
         alignItems: "center",
 
-        marginTop: 34,
-        marginLeft: 39,
+        justifyContent: "space-between",
 
-        gap: 18,
+        marginTop: 25,
+
+        marginBottom: 10,
     },
 
-    opcao: {
+    option: {
         flexDirection: "row",
+
         alignItems: "center",
     },
 
-    iconeOpcao: {
-        width: 20,
-        height: 20,
+    optionIcon: {
+        width: 22,
+        height: 22,
 
-        marginRight: 4,
+        marginRight: 5,
     },
 
-    textoOpcao: {
-        fontSize: 12,
+    optionText: {
+        fontSize: 15,
+
         fontWeight: "500",
+
         color: "#3A6152",
-         marginRight: 15,
     },
 
 
-    // BOTÃO
+    // =====================================================
+    // SENTIMENTOS
+    // =====================================================
 
-    botaoCriar: {
+    sentimentosContainer: {
+        width: "90%",
+
+        alignSelf: "center",
+
+        flexDirection: "row",
+
+        flexWrap: "wrap",
+
+        gap: 8,
+
+        marginTop: 10,
+
+        marginBottom: 10,
+    },
+
+    sentimentoButton: {
+        backgroundColor: "#FFFFFF",
+
+        borderWidth: 1,
+
+        borderColor: "#E4DED2",
+
+        borderRadius: 20,
+
+        paddingHorizontal: 12,
+
+        paddingVertical: 8,
+    },
+
+
+    // =====================================================
+    // FOTO SELECIONADA
+    // =====================================================
+
+    previewContainer: {
+        width: "90%",
+
+        alignSelf: "center",
+
+        marginTop: 15,
+
+        alignItems: "center",
+    },
+
+    previewImage: {
         width: "100%",
+
+        height: 200,
+
+        borderRadius: 8,
+    },
+
+    removeText: {
+        fontSize: 14,
+
+        fontWeight: "600",
+
+        color: "#F56333",
+
+        marginTop: 8,
+    },
+
+
+    // =====================================================
+    // INFORMAÇÕES SELECIONADAS
+    // =====================================================
+
+    selectedInfo: {
+        width: "90%",
+
+        alignSelf: "center",
+
+        backgroundColor: "#FFFFFF",
+
+        borderWidth: 1,
+
+        borderColor: "#E4DED2",
+
+        borderRadius: 8,
+
+        paddingHorizontal: 12,
+
+        paddingVertical: 10,
+
+        marginTop: 10,
+    },
+
+
+    // =====================================================
+    // BOTÃO PUBLICAR
+    // =====================================================
+
+    createButton: {
+        width: "90%",
+
         height: 63,
+
+        alignSelf: "center",
 
         backgroundColor: "#FF6037",
 
         borderRadius: 7,
 
         justifyContent: "center",
+
         alignItems: "center",
 
-        marginTop: 24,
+        marginTop: 30,
     },
 
-    textoBotao: {
-        fontSize: 14,
-        fontWeight: "600",
+    createButtonText: {
+        fontSize: 18,
+
+        fontWeight: "700",
+
         color: "#FFFFFF",
     },
 
 
-    // IMAGEM DO CANTO
+    // =====================================================
+    // DECORAÇÃO
+    // =====================================================
 
     decoracao: {
         position: "absolute",

@@ -9,10 +9,6 @@ import { HeaderStyle } from "./HeaderStyle";
 
 export default function Header({ navigation }) {
 
-    const handleLogoPress = () => {
-        navigation.navigate("BoasVindas");
-    };
-
     const handleSinoPress = () => {
         navigation.navigate("Notificacoes");
     };
@@ -21,16 +17,13 @@ export default function Header({ navigation }) {
         <View style={HeaderStyle.header}>
 
             {/* LOGO */}
-            <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={handleLogoPress}
-            >
+            <View>
                 <Image
                     source={require("../../../assets/LogoPequeno02.png")}
                     style={HeaderStyle.logo}
                     resizeMode="contain"
                 />
-            </TouchableOpacity>
+            </View>
 
             {/* SINO */}
             <TouchableOpacity

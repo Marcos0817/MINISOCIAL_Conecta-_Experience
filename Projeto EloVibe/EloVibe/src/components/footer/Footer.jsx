@@ -10,11 +10,13 @@ import {
 import { FooterStyle } from "./FooterStyle";
 
 
-export default function Footer({ navigation }) {
+export default function Footer({ navigation })  {
 
-    const rotaAtual = navigation.getState().routes[
-        navigation.getState().index
-    ].name;
+    const estado = navigation.getState();
+
+    const rotaAtual =
+        estado.routes[estado.index].name;
+
 
     return (
 
@@ -149,4 +151,4 @@ export default function Footer({ navigation }) {
 
         </View>
     );
-}
+}   

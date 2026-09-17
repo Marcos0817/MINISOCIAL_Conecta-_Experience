@@ -60,10 +60,29 @@ export const TelaFeedStyle = StyleSheet.create({
 
     scrollContent: {
         paddingHorizontal: 27,
-        paddingTop:30,
+        paddingTop: 30,
         paddingBottom: 20,
     },
 
+
+    postImage: {
+        width: "100%",
+        height: 220,
+        borderRadius: 8,
+        marginTop: 12,
+    },
+
+    location: {
+        fontSize: 11,
+        color: "#315F53",
+        marginTop: 8,
+    },
+
+    sentiment: {
+        fontSize: 12,
+        color: "#315F53",
+        marginTop: 6,
+    },
 
     // =====================================================
     // PUBLICAÇÃO

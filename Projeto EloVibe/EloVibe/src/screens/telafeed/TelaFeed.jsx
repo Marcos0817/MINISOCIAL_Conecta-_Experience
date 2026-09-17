@@ -6,6 +6,7 @@ import {
     ScrollView,
     TouchableOpacity,
     Image,
+    Alert,
 } from "react-native";
 
 import api from "../../services/api";
@@ -20,15 +21,11 @@ import Footer from "../../components/footer/Footer";
 
 export const TelaFeed = ({ navigation }) => {
 
-    // =====================================================
-    // PUBLICAÇÕES
-    // =====================================================
-
     const [publicacoes, setPublicacoes] = useState([]);
 
 
     // =====================================================
-    // CARREGAR PUBLICAÇÕES DA API
+    // CARREGAR PUBLICAÇÕES
     // =====================================================
 
     useEffect(() => {
@@ -37,19 +34,78 @@ export const TelaFeed = ({ navigation }) => {
 
             try {
 
-                const resposta = await api.get("/publicacoes");
+                const resposta =
+                    await api.get("/publicacoes");
 
-                const publicacoesApi = resposta.data.map((publicacao) => ({
-                    ...publicacao,
 
-                    // Começam como não curtidas
-                    curtida: false,
+                // =================================================
+                // BUSCA A FOTO DE PERFIL DE CADA USUÁRIO
+                // =================================================
 
-                    // Começam como não salvas
-                    salva: false,
-                }));
+                const publicacoesComUsuario =
+                    await Promise.all(
 
-                setPublicacoes(publicacoesApi);
+                        resposta.data.map(
+                            async (publicacao) => {
+
+                                try {
+
+                                    const respostaUsuario =
+                                        await api.get(
+                                            `/usuarios/${publicacao.usuarioId}`
+                                        );
+
+
+                                    return {
+
+                                        ...publicacao,
+
+                                        // Foto de perfil do usuário
+                                        fotoPerfil:
+                                            respostaUsuario.data.foto,
+
+                                        // Nome atualizado do usuário
+                                        nome:
+                                            respostaUsuario.data.nome,
+
+                                        curtida: false,
+
+                                        salva: false,
+
+                                    };
+
+                                } catch (erro) {
+
+                                    console.log(
+                                        "Erro ao buscar usuário:",
+                                        erro
+                                    );
+
+
+                                    return {
+
+                                        ...publicacao,
+
+                                        fotoPerfil: "",
+
+                                        curtida: false,
+
+                                        salva: false,
+
+                                    };
+
+                                }
+
+                            }
+                        )
+
+                    );
+
+
+                setPublicacoes(
+                    publicacoesComUsuario
+                );
+
 
             } catch (erro) {
 
@@ -62,13 +118,14 @@ export const TelaFeed = ({ navigation }) => {
 
         };
 
+
         carregarPublicacoes();
 
     }, []);
 
 
     // =====================================================
-    // CURTIR PUBLICAÇÃO
+    // CURTIR
     // =====================================================
 
     const curtirPublicacao = (id) => {
@@ -80,13 +137,17 @@ export const TelaFeed = ({ navigation }) => {
                 if (publicacao.id === id) {
 
                     return {
+
                         ...publicacao,
 
-                        curtida: !publicacao.curtida,
+                        curtida:
+                            !publicacao.curtida,
 
-                        curtidas: publicacao.curtida
-                            ? publicacao.curtidas - 1
-                            : publicacao.curtidas + 1,
+                        curtidas:
+                            publicacao.curtida
+                                ? publicacao.curtidas - 1
+                                : publicacao.curtidas + 1,
+
                     };
 
                 }
@@ -101,7 +162,7 @@ export const TelaFeed = ({ navigation }) => {
 
 
     // =====================================================
-    // SALVAR PUBLICAÇÃO
+    // SALVAR
     // =====================================================
 
     const salvarPublicacao = (id) => {
@@ -113,8 +174,12 @@ export const TelaFeed = ({ navigation }) => {
                 if (publicacao.id === id) {
 
                     return {
+
                         ...publicacao,
-                        salva: !publicacao.salva,
+
+                        salva:
+                            !publicacao.salva,
+
                     };
 
                 }
@@ -129,85 +194,202 @@ export const TelaFeed = ({ navigation }) => {
 
 
     // =====================================================
-    // IMAGEM DA PUBLICAÇÃO
+    // EXCLUIR PUBLICAÇÃO
     // =====================================================
 
-    const pegarImagem = (foto) => {
+    const excluirPublicacao = (id) => {
 
-        if (foto === "images-galocego.jpg") {
+        Alert.alert(
 
-            return require("../../../assets/images-galocego.jpg");
+            "Excluir publicação",
 
-        }
+            "Tem certeza que deseja excluir esta publicação?",
 
-        // Imagem padrão caso não encontre
-        return require("../../../assets/images-galocego.jpg");
+            [
+
+                {
+                    text: "Cancelar",
+                    style: "cancel",
+                },
+
+                {
+
+                    text: "Excluir",
+
+                    style: "destructive",
+
+                    onPress: async () => {
+
+                        try {
+
+                            await api.delete(
+                                `/publicacoes/${id}`
+                            );
+
+
+                            setPublicacoes(
+                                (lista) =>
+                                    lista.filter(
+                                        (publicacao) =>
+                                            publicacao.id !== id
+                                    )
+                            );
+
+
+                            Alert.alert(
+                                "Sucesso",
+                                "Publicação excluída."
+                            );
+
+
+                        } catch (erro) {
+
+                            console.log(
+                                "Erro ao excluir publicação:",
+                                erro
+                            );
+
+
+                            Alert.alert(
+                                "Erro",
+                                "Não foi possível excluir a publicação."
+                            );
+
+                        }
+
+                    },
+
+                },
+
+            ]
+
+        );
 
     };
 
 
     // =====================================================
-    // TELA
+    // FOTO DE PERFIL
     // =====================================================
+
+    const pegarImagemPerfil = (foto) => {
+
+        if (!foto || foto === "") {
+
+            return require(
+                "../../../assets/images-galocego.jpg"
+            );
+
+        }
+
+
+        return {
+            uri: foto
+        };
+
+    };
+
 
     return (
 
-        <SafeAreaView style={TelaFeedStyle.container}>
+        <SafeAreaView
+            style={TelaFeedStyle.container}
+        >
 
-            {/* =====================================================
-                HEADER
-            ===================================================== */}
+            <Header
+                navigation={navigation}
+            />
 
-            <Header navigation={navigation} />
-
-
-            {/* =====================================================
-                LISTA
-            ===================================================== */}
 
             <ScrollView
+
                 style={TelaFeedStyle.scroll}
-                contentContainerStyle={TelaFeedStyle.scrollContent}
+
+                contentContainerStyle={
+                    TelaFeedStyle.scrollContent
+                }
+
                 showsVerticalScrollIndicator={false}
+
             >
 
-                {publicacoes.map((publicacao) => (
+                {publicacoes.map(
+                    (publicacao) => (
 
                     <TouchableOpacity
+
                         key={publicacao.id}
-                        style={TelaFeedStyle.post}
+
+                        style={
+                            TelaFeedStyle.post
+                        }
+
                         activeOpacity={0.9}
+
                         onPress={() =>
                             navigation.navigate(
                                 "Publicacao",
                                 {
-                                    publicacao: publicacao,
+                                    publicacaoId:
+                                        publicacao.id,
                                 }
                             )
                         }
+
                     >
 
+
                         {/* =====================================================
-                            CABEÇALHO DA PUBLICAÇÃO
+                            CABEÇALHO
                         ===================================================== */}
 
-                        <View style={TelaFeedStyle.postHeader}>
+                        <View
+                            style={
+                                TelaFeedStyle.postHeader
+                            }
+                        >
 
-                            <View style={TelaFeedStyle.userInfo}>
+                            <View
+                                style={
+                                    TelaFeedStyle.userInfo
+                                }
+                            >
+
+                                {/* FOTO DE PERFIL */}
 
                                 <Image
-                                    source={pegarImagem(publicacao.foto)}
-                                    style={TelaFeedStyle.avatar}
+
+                                    source={
+                                        pegarImagemPerfil(
+                                            publicacao.fotoPerfil
+                                        )
+                                    }
+
+                                    style={
+                                        TelaFeedStyle.avatar
+                                    }
+
                                     resizeMode="cover"
+
                                 />
+
 
                                 <View>
 
-                                    <Text style={TelaFeedStyle.userName}>
+                                    <Text
+                                        style={
+                                            TelaFeedStyle.userName
+                                        }
+                                    >
                                         {publicacao.nome}
                                     </Text>
 
-                                    <Text style={TelaFeedStyle.time}>
+
+                                    <Text
+                                        style={
+                                            TelaFeedStyle.time
+                                        }
+                                    >
                                         {publicacao.horario}
                                     </Text>
 
@@ -216,19 +398,40 @@ export const TelaFeed = ({ navigation }) => {
                             </View>
 
 
-                            {/* TRÊS PONTOS */}
+                            {/* =====================================================
+                                TRÊS PONTOS
+                            ===================================================== */}
 
                             <TouchableOpacity
-                                style={TelaFeedStyle.menuButton}
-                                onPress={(event) =>
-                                    event.stopPropagation()
+
+                                style={
+                                    TelaFeedStyle.menuButton
                                 }
+
+                                onPress={(event) => {
+
+                                    event.stopPropagation();
+
+                                    excluirPublicacao(
+                                        publicacao.id
+                                    );
+
+                                }}
+
                             >
 
                                 <Image
-                                    source={require("../../../assets/TresPontos.png")}
-                                    style={TelaFeedStyle.menuIcon}
+
+                                    source={require(
+                                        "../../../assets/TresPontos.png"
+                                    )}
+
+                                    style={
+                                        TelaFeedStyle.menuIcon
+                                    }
+
                                     resizeMode="contain"
+
                                 />
 
                             </TouchableOpacity>
@@ -237,58 +440,155 @@ export const TelaFeed = ({ navigation }) => {
 
 
                         {/* =====================================================
-                            TEXTO DA PUBLICAÇÃO
+                            TEXTO
                         ===================================================== */}
 
-                        <Text style={TelaFeedStyle.postText}>
+                        <Text
+                            style={
+                                TelaFeedStyle.postText
+                            }
+                        >
                             {publicacao.texto}
                         </Text>
+
+
+                        {/* =====================================================
+                            FOTO DA PUBLICAÇÃO
+                        ===================================================== */}
+
+                        {publicacao.foto &&
+                            publicacao.foto !== "" &&
+                            publicacao.foto !== "images-galocego.jpg" && (
+
+                            <Image
+
+                                source={{
+                                    uri:
+                                        publicacao.foto
+                                }}
+
+                                style={
+                                    TelaFeedStyle.postImage
+                                }
+
+                                resizeMode="cover"
+
+                            />
+
+                        )}
+
+
+                        {/* =====================================================
+                            LOCALIZAÇÃO
+                        ===================================================== */}
+
+                        {publicacao.localizacao &&
+                            publicacao.localizacao !== "" && (
+
+                            <Text
+                                style={
+                                    TelaFeedStyle.location
+                                }
+                            >
+                                📍 {publicacao.localizacao}
+                            </Text>
+
+                        )}
+
+
+                        {/* =====================================================
+                            SENTIMENTO
+                        ===================================================== */}
+
+                        {publicacao.sentimento &&
+                            publicacao.sentimento !== "" && (
+
+                            <Text
+                                style={
+                                    TelaFeedStyle.sentiment
+                                }
+                            >
+                                {publicacao.sentimento}
+                            </Text>
+
+                        )}
 
 
                         {/* =====================================================
                             AÇÕES
                         ===================================================== */}
 
-                        <View style={TelaFeedStyle.actions}>
+                        <View
+                            style={
+                                TelaFeedStyle.actions
+                            }
+                        >
 
-                            {/* =====================================================
-                                CURTIR
-                            ===================================================== */}
+
+                            {/* CURTIR */}
 
                             <TouchableOpacity
-                                style={TelaFeedStyle.action}
+
+                                style={
+                                    TelaFeedStyle.action
+                                }
+
                                 onPress={(event) => {
 
                                     event.stopPropagation();
 
-                                    curtirPublicacao(publicacao.id);
+                                    curtirPublicacao(
+                                        publicacao.id
+                                    );
 
                                 }}
+
                             >
 
                                 <Image
+
                                     source={
+
                                         publicacao.curtida
-                                            ? require("../../../assets/CoracaoVermelhoCard.png")
-                                            : require("../../../assets/Coracao.png")
+
+                                            ? require(
+                                                "../../../assets/CoracaoVermelhoCard.png"
+                                            )
+
+                                            : require(
+                                                "../../../assets/Coracao.png"
+                                            )
+
                                     }
-                                    style={TelaFeedStyle.actionIcon}
+
+                                    style={
+                                        TelaFeedStyle.actionIcon
+                                    }
+
                                     resizeMode="contain"
+
                                 />
 
-                                <Text style={TelaFeedStyle.actionNumber}>
-                                    {publicacao.curtidas}
+
+                                <Text
+                                    style={
+                                        TelaFeedStyle.actionNumber
+                                    }
+                                >
+                                    {publicacao.curtidas || 0}
                                 </Text>
 
                             </TouchableOpacity>
 
 
-                            {/* =====================================================
-                                COMENTÁRIOS
-                            ===================================================== */}
+                            {/* COMENTÁRIOS */}
 
                             <TouchableOpacity
-                                style={TelaFeedStyle.action}
+
+                                style={
+                                    TelaFeedStyle.action
+                                }
+
                                 onPress={(event) => {
 
                                     event.stopPropagation();
@@ -296,56 +596,87 @@ export const TelaFeed = ({ navigation }) => {
                                     navigation.navigate(
                                         "Publicacao",
                                         {
-                                            publicacao: publicacao,
+                                            publicacaoId:
+                                                publicacao.id,
                                         }
                                     );
 
                                 }}
+
                             >
 
                                 <Image
-                                    source={require("../../../assets/Comentario.png")}
-                                    style={TelaFeedStyle.actionIcon}
+
+                                    source={require(
+                                        "../../../assets/Comentario.png"
+                                    )}
+
+                                    style={
+                                        TelaFeedStyle.actionIcon
+                                    }
+
                                     resizeMode="contain"
+
                                 />
 
-                                <Text style={TelaFeedStyle.actionNumber}>
-                                    {publicacao.comentarios}
+
+                                <Text
+                                    style={
+                                        TelaFeedStyle.actionNumber
+                                    }
+                                >
+                                    {publicacao.comentarios || 0}
                                 </Text>
 
                             </TouchableOpacity>
 
 
-                            {/* =====================================================
-                                SALVAR
-                            ===================================================== */}
+                            {/* SALVAR */}
 
                             <TouchableOpacity
-                                style={TelaFeedStyle.saveButton}
+
+                                style={
+                                    TelaFeedStyle.saveButton
+                                }
+
                                 onPress={(event) => {
 
                                     event.stopPropagation();
 
-                                    salvarPublicacao(publicacao.id);
+                                    salvarPublicacao(
+                                        publicacao.id
+                                    );
 
                                 }}
+
                             >
 
                                 <Image
-                                    source={require("../../../assets/Salvar.png")}
+
+                                    source={require(
+                                        "../../../assets/Salvar.png"
+                                    )}
+
                                     style={[
+
                                         TelaFeedStyle.saveIcon,
 
                                         publicacao.salva && {
-                                            tintColor: "#F56333",
+                                            tintColor:
+                                                "#F56333",
                                         },
+
                                     ]}
+
                                     resizeMode="contain"
+
                                 />
 
                             </TouchableOpacity>
 
+
                         </View>
+
 
                     </TouchableOpacity>
 
@@ -355,19 +686,35 @@ export const TelaFeed = ({ navigation }) => {
 
 
             {/* =====================================================
-                BOTÃO FLUTUANTE DE CRIAR PUBLICAÇÃO
+                BOTÃO CRIAR PUBLICAÇÃO
             ===================================================== */}
 
             <TouchableOpacity
-                style={TelaFeedStyle.botaoCriarPublicacao}
+
+                style={
+                    TelaFeedStyle.botaoCriarPublicacao
+                }
+
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate("Criar")}
+
+                onPress={() =>
+                    navigation.navigate("Criar")
+                }
+
             >
 
                 <Image
-                    source={require("../../../assets/ImageAddPubli.png")}
-                    style={TelaFeedStyle.imagemCriarPublicacao}
+
+                    source={require(
+                        "../../../assets/ImageAddPubli.png"
+                    )}
+
+                    style={
+                        TelaFeedStyle.imagemCriarPublicacao
+                    }
+
                     resizeMode="contain"
+
                 />
 
             </TouchableOpacity>
@@ -377,7 +724,9 @@ export const TelaFeed = ({ navigation }) => {
                 FOOTER
             ===================================================== */}
 
-            <Footer navigation={navigation} />
+            <Footer
+                navigation={navigation}
+            />
 
         </SafeAreaView>
 

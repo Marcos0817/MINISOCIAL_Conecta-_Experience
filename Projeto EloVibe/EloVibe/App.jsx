@@ -1,3 +1,4 @@
+
 import React from "react";
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -6,8 +7,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "./src/screens/telalogin/TelaLogin";
 import CriarContaScreen from "./src/screens/telacadastro/TelaCadastro";
 
-import { TelaFeed } from "./src/screens/telafeed/TelaFeed";
-import { CriarPubli } from "./src/screens/criarpublicacao/CriarPubli";
+import {TelaFeed} from "./src/screens/telafeed/TelaFeed";
+import  CriarPubli  from "./src/screens/criarpublicacao/CriarPubli";
 import { Notificacao } from "./src/screens/notificacao/Notificacao";
 
 import TelaPerfil from "./src/screens/perfil/Perfil";
@@ -22,12 +23,18 @@ export default function App() {
 
     return (
         <NavigationContainer>
+
             <Stack.Navigator
                 initialRouteName="BoasVindas"
                 screenOptions={{
                     headerShown: false,
                 }}
             >
+
+                <Stack.Screen
+                    name="BoasVindas"
+                    component={TelaBoasVindas}
+                />
 
                 <Stack.Screen
                     name="Login"
@@ -37,11 +44,6 @@ export default function App() {
                 <Stack.Screen
                     name="CriarConta"
                     component={CriarContaScreen}
-                />
-
-                <Stack.Screen
-                    name="BoasVindas"
-                    component={TelaBoasVindas}
                 />
 
                 <Stack.Screen
@@ -75,6 +77,8 @@ export default function App() {
                 />
 
             </Stack.Navigator>
+
         </NavigationContainer>
     );
 }
+

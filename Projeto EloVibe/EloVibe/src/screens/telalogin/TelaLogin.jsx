@@ -36,6 +36,8 @@ export default function Login({ navigation }) {
 
     const handleEntrar = async () => {
 
+          
+
         // Verifica se os campos estão preenchidos
         if (email.trim() === "" || senha.trim() === "") {
 
@@ -47,10 +49,15 @@ export default function Login({ navigation }) {
             return;
         }
 
+        
+
         try {
 
             // Busca os usuários cadastrados
             const resposta = await api.get("/usuarios");
+
+            // console.log(api.baseURL);
+            
 
             // Procura o usuário pelo e-mail e senha
             const usuarioEncontrado = resposta.data.find(
@@ -94,6 +101,10 @@ export default function Login({ navigation }) {
             );
 
         } catch (erro) {
+            Alert.alert(
+                "Login inválido",
+               "CATCH"
+            );
 
             console.log(
                 "Erro ao realizar login:",

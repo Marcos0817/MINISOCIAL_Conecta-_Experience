@@ -2,10 +2,12 @@
   "usuarios": [
     {
       "id": "1",
-      "nome": "Galo Cego",
+      "nome": "João Vitor",
       "email": "galo@gmail.com",
       "senha": "123456",
-      "foto": "images-galocego.jpg"
+      "foto": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FEloVibe-85357ab1-3381-49c2-8b15-5e01daee8e80/ImagePicker/7fd444d0-9b4b-4408-8973-fabbbefdf3aa.jpeg",
+      "usuario": "",
+      "bio": ""
     },
     {
       "id": "2",
@@ -22,87 +24,41 @@
       "foto": "images-galocego.jpg"
     },
     {
-      "nome": "João Vitor",
+      "nome": "João Vitor.zz",
       "email": "teste@gmail.com",
       "senha": "123",
-      "foto": "images-galocego.jpg",
-      "id": "dumynIBnCcg"
+      "foto": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FEloVibe-85357ab1-3381-49c2-8b15-5e01daee8e80/ImagePicker/49732a02-60e8-4eee-b94b-fb7de40fe942.jpeg",
+      "id": "dumynIBnCcg",
+      "usuario": "",
+      "bio": ""
     }
   ],
   "publicacoes": [
     {
-      "id": "1",
       "usuarioId": "1",
-      "nome": "Galo Cego",
-      "horario": "Hoje às 10:30",
-      "texto": "Aprendendo React Native e Expo Router!",
-      "foto": "images-galocego.jpg",
-      "curtidas": 25,
-      "comentarios": 4
-    },
-    {
-      "id": "2",
-      "usuarioId": "2",
-      "nome": "Maria Oliveira",
-      "horario": "Hoje às 10:30",
-      "texto": "Meu primeiro projeto mobile ficou pronto!!",
-      "foto": "images-galocego.jpg",
-      "curtidas": 32,
-      "comentarios": 8
-    },
-    {
-      "id": "3",
-      "usuarioId": "3",
-      "nome": "João Natalicio",
-      "horario": "Hoje às 12:30",
-      "texto": "Amo programar!",
-      "foto": "images-galocego.jpg",
-      "curtidas": 18,
-      "comentarios": 3
-    },
-    {
-      "id": "4",
-      "usuarioId": "2",
-      "nome": "Isis Ribeiro",
-      "horario": "Hoje às 13:00",
-      "texto": "Começando um novo projeto!",
-      "foto": "images-galocego.jpg",
-      "curtidas": 42,
-      "comentarios": 7
-    },
-    {
-      "id": "5",
-      "usuarioId": "1",
-      "nome": "Marcos Vinicius",
-      "horario": "Hoje às 14:00",
-      "texto": "Hoje foi dia de aprender React Native.",
-      "foto": "images-galocego.jpg",
-      "curtidas": 15,
-      "comentarios": 2
+      "nome": "Usuário",
+      "dataCriacao": "2026-09-17T17:15:36.348Z",
+      "horario": "2026-09-17T17:15:36.348Z",
+      "texto": "Fontes",
+      "foto": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FEloVibe-85357ab1-3381-49c2-8b15-5e01daee8e80/ImagePicker/d11df7da-eff2-4965-96c6-768a7dd9570d.jpeg",
+      "localizacao": "-23.6151, -46.5709",
+      "sentimento": "😍 Apaixonado",
+      "curtidas": 0,
+      "comentarios": 0,
+      "id": "2Jv17V_QS4w"
     },
     {
       "usuarioId": "1",
       "nome": "Usuário",
-      "horario": "Agora",
-      "texto": "Jussa",
-      "foto": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FEloVibe-85357ab1-3381-49c2-8b15-5e01daee8e80/ImagePicker/2b210331-ddd7-4c09-9209-3a889c67087a.jpeg",
-      "localizacao": "São Caetano do Sul",
-      "sentimento": "😍",
+      "dataCriacao": "2026-09-17T17:25:36.654Z",
+      "horario": "2026-09-17T17:25:36.654Z",
+      "texto": "Teste",
+      "foto": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FEloVibe-85357ab1-3381-49c2-8b15-5e01daee8e80/ImagePicker/04df5491-0430-4459-b1e7-72b6bc72d7dc.jpeg",
+      "localizacao": "",
+      "sentimento": "",
       "curtidas": 0,
       "comentarios": 0,
-      "id": "djNrHlX8MKs"
-    },
-    {
-      "usuarioId": "1",
-      "nome": "Usuário",
-      "horario": "Agora",
-      "texto": "Testebsjdbejdbejdbdhsbfbd",
-      "foto": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FEloVibe-85357ab1-3381-49c2-8b15-5e01daee8e80/ImagePicker/c2d22f9a-f67f-4ceb-b8fd-7ac657bdd055.jpeg",
-      "localizacao": "São Caetano do Sul",
-      "sentimento": "😀",
-      "curtidas": 0,
-      "comentarios": 0,
-      "id": "_lEF9bMNDPo"
+      "id": "x3LtC0QeZD8"
     }
   ],
   "comentarios": [
@@ -129,6 +85,166 @@
       "nome": "Galo Cego",
       "texto": "Ficou muito bom!",
       "horario": "Hoje às 10:50"
+    },
+    {
+      "publicacaoId": "_lEF9bMNDPo",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Kskdj",
+      "horario": "Agora",
+      "id": "N8Y-5V9mXVk"
+    },
+    {
+      "publicacaoId": "_lEF9bMNDPo",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Jwjejd",
+      "horario": "Agora",
+      "id": "I8dIHSqmxR0"
+    },
+    {
+      "publicacaoId": "_lEF9bMNDPo",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Jsnd8wiwnr",
+      "horario": "Agora",
+      "id": "VdG4nwluLyY"
+    },
+    {
+      "publicacaoId": "1",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Gegs",
+      "horario": "Agora",
+      "id": "8C49XkiW45c"
+    },
+    {
+      "publicacaoId": "1",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Hdhdhd",
+      "horario": "Agora",
+      "id": "0VWmHsqEU5c"
+    },
+    {
+      "publicacaoId": "t1d1glcK2x4",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Uaaauuuu, que incrível !!",
+      "horario": "Agora",
+      "id": "gyFuwQtRVV4"
+    },
+    {
+      "publicacaoId": "t1d1glcK2x4",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Nossa, esse projeto vai longe🤟🤟",
+      "horario": "Agora",
+      "id": "T5VujasD8Fc"
+    },
+    {
+      "publicacaoId": "t1d1glcK2x4",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Tvg",
+      "horario": "Agora",
+      "id": "vdXgTXSfp10"
+    },
+    {
+      "publicacaoId": "t1d1glcK2x4",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Ddd",
+      "horario": "Agora",
+      "id": "asj4vZsNGBQ"
+    },
+    {
+      "publicacaoId": "8ZfM4I8W8C0",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Hshdjc",
+      "horario": "Agora",
+      "id": "u7P2jBfNTkM"
+    },
+    {
+      "publicacaoId": "8ZfM4I8W8C0",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Hsndhc",
+      "horario": "Agora",
+      "id": "YZrCUFGb7tg"
+    },
+    {
+      "publicacaoId": "2Jv17V_QS4w",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Js",
+      "horario": "Agora",
+      "id": "FRKh93wYMrM"
+    },
+    {
+      "publicacaoId": "2Jv17V_QS4w",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Hdbd",
+      "horario": "Agora",
+      "id": "8D8jnUG5gNA"
+    },
+    {
+      "publicacaoId": "2Jv17V_QS4w",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Nsnd",
+      "horario": "Agora",
+      "id": "S3RpeZqsQlw"
+    },
+    {
+      "publicacaoId": "2Jv17V_QS4w",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Jsnsjd",
+      "horario": "Agora",
+      "id": "CMbfdHc_mtw"
+    },
+    {
+      "publicacaoId": "2Jv17V_QS4w",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Hsbd",
+      "horario": "Agora",
+      "id": "1wIq1fIGIl4"
+    },
+    {
+      "publicacaoId": "x3LtC0QeZD8",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Wigzakzhw",
+      "horario": "Agora",
+      "id": "ohiMRKvti6E"
+    },
+    {
+      "publicacaoId": "x3LtC0QeZD8",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Vhbj",
+      "horario": "Agora",
+      "id": "csSnUP7q094"
+    },
+    {
+      "publicacaoId": "x3LtC0QeZD8",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Vjhff",
+      "horario": "Agora",
+      "id": "2FZofqGkESc"
+    },
+    {
+      "publicacaoId": "x3LtC0QeZD8",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Fhgh",
+      "horario": "Agora",
+      "id": "v6xrib0hfH4"
     }
   ],
   "curtidas": [
