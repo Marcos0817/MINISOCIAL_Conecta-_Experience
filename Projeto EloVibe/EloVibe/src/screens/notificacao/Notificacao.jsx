@@ -111,27 +111,21 @@ export const Notificacao = ({ navigation }) => {
         );
 
 
-        // =================================================
         // HORA
-        // =================================================
 
         const horas = String(
             dataNotificacao.getHours()
         ).padStart(2, "0");
 
 
-        // =================================================
         // MINUTOS
-        // =================================================
 
         const minutos = String(
             dataNotificacao.getMinutes()
         ).padStart(2, "0");
 
 
-        // =================================================
         // HOJE
-        // =================================================
 
         if (diferencaDias === 0) {
 
@@ -140,9 +134,7 @@ export const Notificacao = ({ navigation }) => {
         }
 
 
-        // =================================================
         // ONTEM
-        // =================================================
 
         if (diferencaDias === 1) {
 
@@ -151,9 +143,7 @@ export const Notificacao = ({ navigation }) => {
         }
 
 
-        // =================================================
         // OUTRAS DATAS
-        // =================================================
 
         const dia = String(
             dataNotificacao.getDate()
@@ -173,16 +163,12 @@ export const Notificacao = ({ navigation }) => {
     };
 
 
-    // =====================================================
+   
     // PEGAR DATA REAL DA AÇÃO
-    // =====================================================
-
+   
     const pegarDataAcao = (item) => {
 
-        // Prioridade:
-        // 1. dataHora
-        // 2. dataCriacao
-        // 3. horario
+       
 
         if (item?.dataHora) {
             return item.dataHora;
@@ -192,8 +178,7 @@ export const Notificacao = ({ navigation }) => {
             return item.dataCriacao;
         }
 
-        // "Agora" não é uma data válida.
-        // Nesse caso não inventamos uma data.
+      
         if (
             item?.horario &&
             item.horario !== "Agora"

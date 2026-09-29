@@ -52,7 +52,7 @@ export default function CriarContaScreen({ navigation }) {
                 nome: nome.trim(),
                 email: email.trim(),
                 senha: senha,
-                foto: "images-galocego.jpg",
+                foto: "images-d.jpg",
             });
 
             Alert.alert(

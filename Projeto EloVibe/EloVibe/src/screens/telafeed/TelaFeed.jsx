@@ -568,7 +568,7 @@ export const TelaFeed = ({ navigation }) => {
                         (item) =>
 
                             String(item.id) ===
-                            String(publicacao.id)
+                                String(publicacao.id)
 
                                 ? {
                                     ...item,
@@ -1317,9 +1317,9 @@ export const TelaFeed = ({ navigation }) => {
             </TouchableOpacity>
 
 
-            {/* =====================================================
-                FOOTER
-            ===================================================== */}
+
+
+
 
             <Footer
                 navigation={

@@ -125,6 +125,19 @@
       "curtidas": 0,
       "comentarios": 0,
       "id": "qE_iA41zjpQ"
+    },
+    {
+      "usuarioId": "dumynIBnCcg",
+      "nome": "Usuário",
+      "dataCriacao": "2026-09-29T18:36:52.216Z",
+      "horario": "2026-09-29T18:36:52.216Z",
+      "texto": "Teste",
+      "foto": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FEloVibe-85357ab1-3381-49c2-8b15-5e01daee8e80/ImagePicker/54db27b6-bd24-4af9-a4e6-85d7d6aa97dd.jpeg",
+      "localizacao": "142, Rua Goitacazes, São Caetano do Sul - Brasil",
+      "sentimento": "😊 Feliz",
+      "curtidas": 0,
+      "comentarios": 0,
+      "id": "cIWRx33dH8s"
     }
   ],
   "comentarios": [
@@ -510,11 +523,6 @@
     },
     {
       "usuarioId": "dumynIBnCcg",
-      "publicacaoId": "xz1O63yBGK8",
-      "id": "XZHwr2VC17Y"
-    },
-    {
-      "usuarioId": "dumynIBnCcg",
       "publicacaoId": "qE_iA41zjpQ",
       "id": "cwn8-aIw7VY"
     },
@@ -522,6 +530,12 @@
       "usuarioId": "dumynIBnCcg",
       "publicacaoId": "dQPabbwPVpI",
       "id": "Tc7oHdnn_go"
+    },
+    {
+      "usuarioId": "dumynIBnCcg",
+      "publicacaoId": "xz1O63yBGK8",
+      "dataHora": "2026-09-29T18:35:04.503Z",
+      "id": "aFz86sOEgoM"
     }
   ],
   "salvos": [
