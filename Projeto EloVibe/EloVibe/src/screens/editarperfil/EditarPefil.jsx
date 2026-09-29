@@ -13,8 +13,6 @@ import {
     ActivityIndicator,
 } from "react-native";
 
-import { Ionicons } from "@expo/vector-icons";
-
 import EditarPerfilStyle from "./EditarPerfilStyle";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -50,13 +48,13 @@ export default function TelaEditarPerfil({ navigation }) {
 
             try {
 
-                // Pega o ID que foi salvo no Login
-                const id = await AsyncStorage.getItem("usuarioId");
+                const id = await AsyncStorage.getItem("idUsuario");
 
-                console.log("ID do usuário logado:", id);
+                console.log("=================================");
+                console.log("ID DO USUÁRIO LOGADO:", id);
+                console.log("=================================");
 
 
-                // Verifica se existe um ID salvo
                 if (!id) {
 
                     Alert.alert(
@@ -70,19 +68,29 @@ export default function TelaEditarPerfil({ navigation }) {
                 }
 
 
-                // Guarda o ID no estado
                 setUsuarioId(id);
 
 
-                // Busca o usuário no db.json
+                console.log(
+                    "Buscando usuário:",
+                    `/usuarios/${id}`
+                );
+
+
                 const resposta = await api.get(
                     `/usuarios/${id}`
                 );
 
+
                 const dados = resposta.data;
 
 
-                // Coloca os dados nos campos
+                console.log(
+                    "Dados do usuário:",
+                    dados
+                );
+
+
                 setNome(dados.nome || "");
                 setUsuario(dados.usuario || "");
                 setBio(dados.bio || "");
@@ -92,14 +100,37 @@ export default function TelaEditarPerfil({ navigation }) {
             } catch (erro) {
 
                 console.log(
-                    "Erro ao carregar perfil:",
+                    "================================="
+                );
+
+                console.log(
+                    "ERRO AO CARREGAR PERFIL"
+                );
+
+                console.log(
+                    "================================="
+                );
+
+                console.log(
+                    "Mensagem:",
                     erro.message
+                );
+
+                console.log(
+                    "Status:",
+                    erro.response?.status
                 );
 
                 console.log(
                     "Resposta da API:",
                     erro.response?.data
                 );
+
+                console.log(
+                    "URL:",
+                    erro.config?.url
+                );
+
 
                 Alert.alert(
                     "Erro",
@@ -280,7 +311,6 @@ export default function TelaEditarPerfil({ navigation }) {
 
     const handleSalvarAlteracoes = async () => {
 
-        // Verifica se o ID existe
         if (!usuarioId) {
 
             Alert.alert(
@@ -292,7 +322,6 @@ export default function TelaEditarPerfil({ navigation }) {
         }
 
 
-        // Verifica se pelo menos o nome ou usuário foi preenchido
         if (
             nome.trim() === "" &&
             usuario.trim() === ""
@@ -312,7 +341,6 @@ export default function TelaEditarPerfil({ navigation }) {
 
         try {
 
-            // Dados que serão atualizados no db.json
             const perfilAtualizado = {
 
                 nome: nome.trim(),
@@ -327,8 +355,25 @@ export default function TelaEditarPerfil({ navigation }) {
 
 
             console.log(
-                "Atualizando usuário:",
+                "================================="
+            );
+
+            console.log(
+                "ATUALIZANDO USUÁRIO"
+            );
+
+            console.log(
+                "================================="
+            );
+
+            console.log(
+                "ID:",
                 usuarioId
+            );
+
+            console.log(
+                "URL:",
+                `/usuarios/${usuarioId}`
             );
 
             console.log(
@@ -337,15 +382,17 @@ export default function TelaEditarPerfil({ navigation }) {
             );
 
 
-            // Atualiza somente os campos enviados
-            // do usuário que está logado
             await api.patch(
                 `/usuarios/${usuarioId}`,
                 perfilAtualizado
             );
 
 
-            // Atualiza também o nome salvo no AsyncStorage
+            console.log(
+                "Usuário atualizado com sucesso!"
+            );
+
+
             await AsyncStorage.setItem(
                 "nomeUsuario",
                 nome.trim()
@@ -409,10 +456,12 @@ export default function TelaEditarPerfil({ navigation }) {
             Alert.alert(
                 "Erro ao salvar",
 
-                `Status: ${
-                    erro.response?.status ||
-                    "Sem resposta"
-                }\n\n${erro.message}`
+                `Não foi possível salvar as alterações.\n\n` +
+                `Status: ${erro.response?.status ||
+                "Sem resposta"
+                }\n\n` +
+                `${erro.message}`
+
             );
 
 
@@ -437,11 +486,7 @@ export default function TelaEditarPerfil({ navigation }) {
             >
 
                 <View
-                    style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        alignItems: "center",
-                    }}
+                    style={EditarPerfilStyle.loadingContainer}
                 >
 
                     <ActivityIndicator
@@ -450,10 +495,7 @@ export default function TelaEditarPerfil({ navigation }) {
                     />
 
                     <Text
-                        style={{
-                            marginTop: 10,
-                            color: "#315F53",
-                        }}
+                        style={EditarPerfilStyle.loadingText}
                     >
                         Carregando perfil...
                     </Text>
@@ -478,9 +520,7 @@ export default function TelaEditarPerfil({ navigation }) {
 
             <KeyboardAvoidingView
 
-                style={{
-                    flex: 1,
-                }}
+                style={EditarPerfilStyle.keyboardContainer}
 
                 behavior={
                     Platform.OS === "ios"
@@ -502,13 +542,11 @@ export default function TelaEditarPerfil({ navigation }) {
 
                     keyboardShouldPersistTaps="handled"
 
-                    contentContainerStyle={{
-                        flexGrow: 1,
-                        paddingBottom: 40,
-                    }}
+                    contentContainerStyle={
+                        EditarPerfilStyle.scrollContent
+                    }
 
                 >
-
 
                     {/* TÍTULO */}
 
@@ -548,6 +586,8 @@ export default function TelaEditarPerfil({ navigation }) {
                         />
 
 
+                        {/* BOTÃO DE EDITAR FOTO */}
+
                         <TouchableOpacity
 
                             style={
@@ -562,14 +602,18 @@ export default function TelaEditarPerfil({ navigation }) {
 
                         >
 
-                            <Ionicons
+                            <Image
+                                source={
+                                    require(
+                                        "../../../assets/QuadradoEditar.png"
+                                    )
+                                }
 
-                                name="pencil"
+                                style={
+                                    EditarPerfilStyle.iconeEditar
+                                }
 
-                                size={15}
-
-                                color="#315F53"
-
+                                resizeMode="contain"
                             />
 
                         </TouchableOpacity>
@@ -670,6 +714,7 @@ export default function TelaEditarPerfil({ navigation }) {
                     <TouchableOpacity
 
                         style={[
+
                             EditarPerfilStyle.botaoSalvar,
 
                             salvando && {

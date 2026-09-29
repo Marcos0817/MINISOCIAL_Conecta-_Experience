@@ -78,17 +78,20 @@ const EditarPerfilStyle = StyleSheet.create({
 
         height: 23,
 
-        borderRadius: 5,
-
-        backgroundColor: "#FBF6EE",
-
-        borderWidth: 1,
-
-        borderColor: "#315F53",
-
         alignItems: "center",
 
         justifyContent: "center",
+    },
+
+
+    // ==========================================
+    // IMAGEM DO BOTÃO EDITAR
+    // ==========================================
+
+    iconeEditar: {
+        width: 23,
+
+        height: 23,
     },
 
 

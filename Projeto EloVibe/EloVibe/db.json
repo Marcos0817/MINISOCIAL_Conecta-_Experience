@@ -24,41 +24,107 @@
       "foto": "images-galocego.jpg"
     },
     {
-      "nome": "João Vitor.zz",
+      "nome": "João Vitor",
       "email": "teste@gmail.com",
       "senha": "123",
-      "foto": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FEloVibe-85357ab1-3381-49c2-8b15-5e01daee8e80/ImagePicker/49732a02-60e8-4eee-b94b-fb7de40fe942.jpeg",
+      "foto": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FEloVibe-85357ab1-3381-49c2-8b15-5e01daee8e80/ImagePicker/73db52ef-9be0-478a-a35c-235d9134d257.jpeg",
       "id": "dumynIBnCcg",
-      "usuario": "",
-      "bio": ""
+      "usuario": "jvzinn",
+      "bio": "Boa rapaziada, Jesus te ama❤️\n\n💍"
+    },
+    {
+      "nome": "Francisco Hugo",
+      "email": "hugodev@gmail.com",
+      "senha": "134",
+      "foto": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FEloVibe-85357ab1-3381-49c2-8b15-5e01daee8e80/ImagePicker/57968a39-778a-4a8f-b52b-fba5c9c17710.jpeg",
+      "id": "qG37oStv3g8",
+      "usuario": "HugãoDev",
+      "bio": "Amo a Lívia"
+    },
+    {
+      "nome": "Marcos Vinicius",
+      "email": "marcao@gmail.com",
+      "senha": "1234",
+      "foto": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FEloVibe-85357ab1-3381-49c2-8b15-5e01daee8e80/ImagePicker/7976c630-6af4-41cd-bda9-33d16c1f0381.jpeg",
+      "id": "roFOcPnlBgM",
+      "usuario": "Marcoszqk",
+      "bio": "Boa boa"
+    },
+    {
+      "nome": "Felipe Gonçalves",
+      "email": "fefe@gmail.com",
+      "senha": "Dev123",
+      "foto": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FEloVibe-85357ab1-3381-49c2-8b15-5e01daee8e80/ImagePicker/6a58e888-0f82-458a-abac-61774fdffe41.jpeg",
+      "id": "hE7XAc2g2wk",
+      "usuario": "Fezão Dev",
+      "bio": "..."
     }
   ],
   "publicacoes": [
     {
-      "usuarioId": "1",
+      "usuarioId": "dumynIBnCcg",
       "nome": "Usuário",
-      "dataCriacao": "2026-09-17T17:15:36.348Z",
-      "horario": "2026-09-17T17:15:36.348Z",
-      "texto": "Fontes",
-      "foto": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FEloVibe-85357ab1-3381-49c2-8b15-5e01daee8e80/ImagePicker/d11df7da-eff2-4965-96c6-768a7dd9570d.jpeg",
-      "localizacao": "-23.6151, -46.5709",
-      "sentimento": "😍 Apaixonado",
+      "dataCriacao": "2026-09-29T13:51:34.854Z",
+      "horario": "2026-09-29T13:51:34.854Z",
+      "texto": "Vim pá praia grande, e vi vários mano de Diadema, eu corro ou fico?",
+      "foto": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FEloVibe-85357ab1-3381-49c2-8b15-5e01daee8e80/ImagePicker/311c3e52-a34e-4299-bbfa-72eb6dc031fc.jpeg",
+      "localizacao": "",
+      "sentimento": "🤔 Pensativo",
       "curtidas": 0,
       "comentarios": 0,
-      "id": "2Jv17V_QS4w"
+      "id": "Z6xkpDeU_yE"
     },
     {
-      "usuarioId": "1",
+      "usuarioId": "dumynIBnCcg",
       "nome": "Usuário",
-      "dataCriacao": "2026-09-17T17:25:36.654Z",
-      "horario": "2026-09-17T17:25:36.654Z",
-      "texto": "Teste",
-      "foto": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FEloVibe-85357ab1-3381-49c2-8b15-5e01daee8e80/ImagePicker/04df5491-0430-4459-b1e7-72b6bc72d7dc.jpeg",
-      "localizacao": "",
-      "sentimento": "",
+      "dataCriacao": "2026-09-29T13:53:03.337Z",
+      "horario": "2026-09-29T13:53:03.337Z",
+      "texto": "Vim pro SENAI e me deparei com essa aberração aqui no computador.",
+      "foto": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FEloVibe-85357ab1-3381-49c2-8b15-5e01daee8e80/ImagePicker/75f043ca-0b3d-4ea3-ba10-9e209f3515a4.jpeg",
+      "localizacao": "142, Rua Goitacazes, São Caetano do Sul - Brasil",
+      "sentimento": "😡 Irritado",
       "curtidas": 0,
       "comentarios": 0,
-      "id": "x3LtC0QeZD8"
+      "id": "cUXJBtydFgo"
+    },
+    {
+      "usuarioId": "qG37oStv3g8",
+      "nome": "Usuário",
+      "dataCriacao": "2026-09-29T13:58:56.241Z",
+      "horario": "2026-09-29T13:58:56.241Z",
+      "texto": "Deu red família",
+      "foto": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FEloVibe-85357ab1-3381-49c2-8b15-5e01daee8e80/ImagePicker/5ad6ecf2-c86d-41ff-908c-a66e6441af88.jpeg",
+      "localizacao": "142, Rua Goitacazes, São Caetano do Sul - Brasil",
+      "sentimento": "😢 Triste",
+      "curtidas": 0,
+      "comentarios": 0,
+      "id": "xz1O63yBGK8"
+    },
+    {
+      "usuarioId": "hE7XAc2g2wk",
+      "nome": "Usuário",
+      "dataCriacao": "2026-09-29T14:17:57.887Z",
+      "horario": "2026-09-29T14:17:57.887Z",
+      "texto": "Ae rapaziada, academia boa de mais em, hoje vai render💪",
+      "foto": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FEloVibe-85357ab1-3381-49c2-8b15-5e01daee8e80/ImagePicker/d94ef4c7-f195-42d5-9266-8321b632fdea.jpeg",
+      "localizacao": "",
+      "sentimento": "😎 Confiante",
+      "curtidas": 0,
+      "comentarios": 0,
+      "id": "dQPabbwPVpI"
+    },
+    {
+      "usuarioId": "qG37oStv3g8",
+      "nome": "Usuário",
+      "dataCriacao": "2026-09-29T14:25:18.639Z",
+      "horario": "2026-09-29T14:25:18.639Z",
+      "texto": "Texte",
+      "foto": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FEloVibe-85357ab1-3381-49c2-8b15-5e01daee8e80/ImagePicker/ad3c7571-35b5-4699-b69f-3cc0ac3df080.jpeg",
+      "localizacao": "142, Rua Goitacazes, São Caetano do Sul - Brasil",
+      "sentimento": "🤔 Pensativo",
+      "curtidas": 0,
+      "comentarios": 0,
+      "id": "qE_iA41zjpQ"
     }
   ],
   "comentarios": [
@@ -245,6 +311,145 @@
       "texto": "Fhgh",
       "horario": "Agora",
       "id": "v6xrib0hfH4"
+    },
+    {
+      "publicacaoId": "Vs5GbrgfacE",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Nsncjd",
+      "horario": "Agora",
+      "id": "C1xyM_tSGA0"
+    },
+    {
+      "publicacaoId": "5ywT9FqV81Y",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Hchc",
+      "horario": "Agora",
+      "id": "2eQ4YnQD_G0"
+    },
+    {
+      "publicacaoId": "5ywT9FqV81Y",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "Bcbc",
+      "horario": "Agora",
+      "id": "VVSU_f7rUZw"
+    },
+    {
+      "publicacaoId": "5ywT9FqV81Y",
+      "usuarioId": "1",
+      "nome": "Usuário",
+      "texto": "N vuchc",
+      "horario": "Agora",
+      "id": "nyBHWVlgWVs"
+    },
+    {
+      "publicacaoId": "rirwINyf_gI",
+      "usuarioId": "1",
+      "nome": "João Vitor",
+      "texto": "ksbdjsbf",
+      "horario": "Agora",
+      "id": "Y7vvUuzGgXo"
+    },
+    {
+      "publicacaoId": "rirwINyf_gI",
+      "usuarioId": "1",
+      "nome": "João Vitor",
+      "texto": "Jsncjsbd",
+      "horario": "Agora",
+      "id": "VONhcEmTaFg"
+    },
+    {
+      "publicacaoId": "rirwINyf_gI",
+      "usuarioId": "1",
+      "nome": "João Vitor",
+      "texto": "Jsndjsbd",
+      "horario": "Agora",
+      "id": "MsWN-HRzwEs"
+    },
+    {
+      "publicacaoId": "rirwINyf_gI",
+      "usuarioId": "1",
+      "nome": "João Vitor",
+      "texto": "Jajsjshs",
+      "horario": "Agora",
+      "id": "Idptorr0HuE"
+    },
+    {
+      "publicacaoId": "xz1O63yBGK8",
+      "usuarioId": "qG37oStv3g8",
+      "nome": "Francisco Hugo",
+      "texto": "Complicado em pai",
+      "horario": "Agora",
+      "id": "2vKfh0sojRQ"
+    },
+    {
+      "publicacaoId": "xz1O63yBGK8",
+      "usuarioId": "dumynIBnCcg",
+      "nome": "Jvzinn",
+      "texto": "Sé doido pai, apertava o botão vermelho e pedia desistência",
+      "horario": "Agora",
+      "id": "RRATjdOmaqs"
+    },
+    {
+      "publicacaoId": "Z6xkpDeU_yE",
+      "usuarioId": "roFOcPnlBgM",
+      "nome": "Marcos Vinicius",
+      "texto": "Melhor tu correr pai",
+      "horario": "Agora",
+      "id": "_gvXjzjAoKk"
+    },
+    {
+      "publicacaoId": "cUXJBtydFgo",
+      "usuarioId": "hE7XAc2g2wk",
+      "nome": "Felipe Gonçalves",
+      "texto": "KKKKKKKKKKK boa sorte irm",
+      "horario": "Agora",
+      "id": "ct3WK3fyGsE"
+    },
+    {
+      "publicacaoId": "qE_iA41zjpQ",
+      "usuarioId": "dumynIBnCcg",
+      "nome": "João Vitor",
+      "texto": "Bicho vei seboso",
+      "horario": "Agora",
+      "id": "NWvGu4VYG7U"
+    },
+    {
+      "publicacaoId": "dQPabbwPVpI",
+      "usuarioId": "dumynIBnCcg",
+      "nome": "João Vitor",
+      "texto": "Boa irm, tô precisando ir também em KKKKKK",
+      "horario": "Agora",
+      "id": "6pUtPNMQSfQ"
+    },
+    {
+      "publicacaoId": "Z6xkpDeU_yE",
+      "usuarioId": "hE7XAc2g2wk",
+      "nome": "Felipe Gonçalves",
+      "texto": "KKKKKKKKKKK",
+      "horario": "Agora",
+      "dataHora": "2026-09-29T16:47:29.368Z",
+      "id": "JFxgRNen_KI"
+    },
+    {
+      "publicacaoId": "Z6xkpDeU_yE",
+      "usuarioId": "qG37oStv3g8",
+      "nome": "Francisco Hugo",
+      "texto": "Que isso KKKKKK",
+      "horario": "Agora",
+      "dataHora": "2026-09-29T16:48:43.514Z",
+      "id": "H8PAIcRVmME"
+    },
+    {
+      "publicacaoId": "Z6xkpDeU_yE",
+      "usuarioId": "qG37oStv3g8",
+      "nome": "Francisco Hugo",
+      "texto": "Corre se não a bala vai comer",
+      "horario": "Agora",
+      "dataHora": "2026-09-29T16:54:41.049Z",
+      "id": "GoBhee-9IA0"
     }
   ],
   "curtidas": [
@@ -257,6 +462,66 @@
       "id": "2",
       "usuarioId": "3",
       "publicacaoId": "1"
+    },
+    {
+      "usuarioId": "1",
+      "publicacaoId": "5ywT9FqV81Y",
+      "id": "gMH9_sUmrFU"
+    },
+    {
+      "usuarioId": "1",
+      "publicacaoId": "5ywT9FqV81Y",
+      "id": "jCaXPc-EDOc"
+    },
+    {
+      "usuarioId": "1",
+      "publicacaoId": "5ywT9FqV81Y",
+      "id": "DdOZFOEP9-8"
+    },
+    {
+      "usuarioId": "dumynIBnCcg",
+      "publicacaoId": "5ywT9FqV81Y",
+      "id": "jbbmyAo7_3Y"
+    },
+    {
+      "usuarioId": "dumynIBnCcg",
+      "publicacaoId": "rirwINyf_gI",
+      "id": "R6IRZxjov1I"
+    },
+    {
+      "usuarioId": "1",
+      "publicacaoId": "rirwINyf_gI",
+      "id": "lccJLB32kmc"
+    },
+    {
+      "usuarioId": "dumynIBnCcg",
+      "publicacaoId": "5TRzBJzEbOQ",
+      "id": "aH4Py1_FBwM"
+    },
+    {
+      "usuarioId": "qG37oStv3g8",
+      "publicacaoId": "Z6xkpDeU_yE",
+      "id": "X6RKIleYAyg"
+    },
+    {
+      "usuarioId": "qG37oStv3g8",
+      "publicacaoId": "cUXJBtydFgo",
+      "id": "VNGHM1FO-BA"
+    },
+    {
+      "usuarioId": "dumynIBnCcg",
+      "publicacaoId": "xz1O63yBGK8",
+      "id": "XZHwr2VC17Y"
+    },
+    {
+      "usuarioId": "dumynIBnCcg",
+      "publicacaoId": "qE_iA41zjpQ",
+      "id": "cwn8-aIw7VY"
+    },
+    {
+      "usuarioId": "dumynIBnCcg",
+      "publicacaoId": "dQPabbwPVpI",
+      "id": "Tc7oHdnn_go"
     }
   ],
   "salvos": [

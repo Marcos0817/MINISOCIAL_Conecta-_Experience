@@ -16,6 +16,8 @@ import api from "../../services/api";
 import { CriarPubliStyle } from "./CriarPubliStyle";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
 
@@ -28,14 +30,18 @@ export default function CriarPubli({ navigation }) {
     const [mostrarSentimentos, setMostrarSentimentos] = useState(false);
 
 
+    // =====================================================
     // FECHAR
+    // =====================================================
 
     const handleFechar = () => {
         navigation.navigate("Inicio");
     };
 
 
+    // =====================================================
     // ESCOLHER IMAGEM
+    // =====================================================
 
     const selecionarImagem = async () => {
 
@@ -75,7 +81,9 @@ export default function CriarPubli({ navigation }) {
     };
 
 
+    // =====================================================
     // TIRAR FOTO
+    // =====================================================
 
     const tirarFoto = async () => {
 
@@ -113,7 +121,9 @@ export default function CriarPubli({ navigation }) {
     };
 
 
+    // =====================================================
     // ESCOLHER FOTO
+    // =====================================================
 
     const escolherFoto = () => {
 
@@ -141,32 +151,62 @@ export default function CriarPubli({ navigation }) {
     };
 
 
+    // =====================================================
     // LOCALIZAÇÃO
+    // =====================================================
 
     const pegarLocalizacao = async () => {
 
-        const { status } =
-            await Location.requestForegroundPermissionsAsync();
-
-        if (status !== "granted") {
-
-            Alert.alert(
-                "Permissão necessária",
-                "Precisamos da sua localização."
-            );
-
-            return;
-        }
-
         try {
 
+            // -------------------------------------------------
+            // PEDIR PERMISSÃO
+            // -------------------------------------------------
+
+            const { status } =
+                await Location.requestForegroundPermissionsAsync();
+
+            if (status !== "granted") {
+
+                Alert.alert(
+                    "Permissão necessária",
+                    "Precisamos da sua localização para mostrar onde você está."
+                );
+
+                return;
+            }
+
+
+            // -------------------------------------------------
+            // PEGAR LOCALIZAÇÃO ATUAL
+            // -------------------------------------------------
+
             const location =
-                await Location.getCurrentPositionAsync({});
+                await Location.getCurrentPositionAsync({
+                    accuracy: Location.Accuracy.High,
+                });
+
 
             const {
                 latitude,
                 longitude
             } = location.coords;
+
+
+            console.log(
+                "Latitude:",
+                latitude
+            );
+
+            console.log(
+                "Longitude:",
+                longitude
+            );
+
+
+            // -------------------------------------------------
+            // TRANSFORMAR COORDENADAS EM ENDEREÇO
+            // -------------------------------------------------
 
             const endereco =
                 await Location.reverseGeocodeAsync({
@@ -176,32 +216,203 @@ export default function CriarPubli({ navigation }) {
 
                 });
 
+
+            console.log(
+                "Endereço encontrado:",
+                endereco
+            );
+
+
+            // -------------------------------------------------
+            // VERIFICAR SE ENCONTROU ENDEREÇO
+            // -------------------------------------------------
+
             if (endereco.length > 0) {
 
                 const lugar = endereco[0];
 
-                if (lugar.city && lugar.region) {
 
-                    setLocalizacao(
-                        `${lugar.city}, ${lugar.region}`
-                    );
+                // -------------------------------------------------
+                // ESTABELECIMENTO
+                // -------------------------------------------------
 
-                } else if (lugar.city) {
+                const estabelecimento =
+                    lugar.name &&
+                    lugar.name !== lugar.street
+                        ? lugar.name
+                        : "";
 
-                    setLocalizacao(
-                        lugar.city
-                    );
 
-                } else {
+                // -------------------------------------------------
+                // RUA
+                // -------------------------------------------------
 
-                    setLocalizacao(
-                        `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`
-                    );
+                const rua =
+                    lugar.street ||
+                    lugar.name ||
+                    "";
+
+
+                // -------------------------------------------------
+                // CIDADE
+                // -------------------------------------------------
+
+                const cidade =
+                    lugar.city ||
+                    lugar.subregion ||
+                    lugar.district ||
+                    "";
+
+
+                // -------------------------------------------------
+                // PAÍS
+                // -------------------------------------------------
+
+                const pais =
+                    lugar.country ||
+                    "";
+
+
+                // -------------------------------------------------
+                // MOSTRAR NO CONSOLE
+                // -------------------------------------------------
+
+                console.log(
+                    "Estabelecimento:",
+                    estabelecimento
+                );
+
+                console.log(
+                    "Rua:",
+                    rua
+                );
+
+                console.log(
+                    "Cidade:",
+                    cidade
+                );
+
+                console.log(
+                    "País:",
+                    pais
+                );
+
+
+                // -------------------------------------------------
+                // MONTAR ENDEREÇO COMPLETO
+                // -------------------------------------------------
+
+                let enderecoCompleto = "";
+
+
+                // ESTABELECIMENTO + RUA + CIDADE + PAÍS
+
+                if (
+                    estabelecimento &&
+                    rua &&
+                    cidade &&
+                    pais
+                ) {
+
+                    enderecoCompleto =
+                        `${estabelecimento}, ${rua}, ${cidade} - ${pais}`;
 
                 }
+
+
+                // RUA + CIDADE + PAÍS
+
+                else if (
+                    rua &&
+                    cidade &&
+                    pais
+                ) {
+
+                    enderecoCompleto =
+                        `${rua}, ${cidade} - ${pais}`;
+
+                }
+
+
+                // CIDADE + PAÍS
+
+                else if (
+                    cidade &&
+                    pais
+                ) {
+
+                    enderecoCompleto =
+                        `${cidade} - ${pais}`;
+
+                }
+
+
+                // SOMENTE CIDADE
+
+                else if (cidade) {
+
+                    enderecoCompleto =
+                        cidade;
+
+                }
+
+
+                // SOMENTE PAÍS
+
+                else if (pais) {
+
+                    enderecoCompleto =
+                        pais;
+
+                }
+
+
+                // NENHUM ENDEREÇO ENCONTRADO
+
+                else {
+
+                    enderecoCompleto =
+                        `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
+
+                }
+
+
+                // -------------------------------------------------
+                // MOSTRAR RESULTADO
+                // -------------------------------------------------
+
+                console.log(
+                    "Localização formatada:",
+                    enderecoCompleto
+                );
+
+
+                setLocalizacao(
+                    enderecoCompleto
+                );
+
             }
 
-        } catch (error) {
+            else {
+
+                // -------------------------------------------------
+                // CASO NÃO ENCONTRE ENDEREÇO
+                // -------------------------------------------------
+
+                setLocalizacao(
+                    `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`
+                );
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.log(
+                "Erro ao obter localização:",
+                error
+            );
 
             Alert.alert(
                 "Erro",
@@ -212,7 +423,9 @@ export default function CriarPubli({ navigation }) {
     };
 
 
+    // =====================================================
     // SENTIMENTO
+    // =====================================================
 
     const selecionarSentimento = (valor) => {
 
@@ -223,7 +436,9 @@ export default function CriarPubli({ navigation }) {
     };
 
 
+    // =====================================================
     // CRIAR PUBLICAÇÃO
+    // =====================================================
 
     const handleCriarPublicacao = async () => {
 
@@ -239,12 +454,44 @@ export default function CriarPubli({ navigation }) {
 
         try {
 
+            // -------------------------------------------------
+            // PEGAR ID DO USUÁRIO LOGADO
+            // -------------------------------------------------
+
+            const usuarioId =
+                await AsyncStorage.getItem("idUsuario");
+
+
+            // -------------------------------------------------
+            // VERIFICAR USUÁRIO
+            // -------------------------------------------------
+
+            if (!usuarioId) {
+
+                Alert.alert(
+                    "Erro",
+                    "Não foi possível identificar o usuário logado."
+                );
+
+                return;
+            }
+
+
+            // -------------------------------------------------
+            // DATA
+            // -------------------------------------------------
+
             const dataCriacao =
                 new Date().toISOString();
 
+
+            // -------------------------------------------------
+            // CRIAR OBJETO DA PUBLICAÇÃO
+            // -------------------------------------------------
+
             const novaPublicacao = {
 
-                usuarioId: "1",
+                usuarioId: usuarioId,
 
                 nome: "Usuário",
 
@@ -266,10 +513,40 @@ export default function CriarPubli({ navigation }) {
 
             };
 
+
+            // -------------------------------------------------
+            // LOGS
+            // -------------------------------------------------
+
+            console.log(
+                "ID DO USUÁRIO LOGADO:",
+                usuarioId
+            );
+
+            console.log(
+                "ID SALVO NA PUBLICAÇÃO:",
+                novaPublicacao.usuarioId
+            );
+
+            console.log(
+                "LOCALIZAÇÃO:",
+                novaPublicacao.localizacao
+            );
+
+
+            // -------------------------------------------------
+            // ENVIAR PARA API
+            // -------------------------------------------------
+
             await api.post(
                 "/publicacoes",
                 novaPublicacao
             );
+
+
+            // -------------------------------------------------
+            // LIMPAR CAMPOS
+            // -------------------------------------------------
 
             setTexto("");
 
@@ -279,14 +556,26 @@ export default function CriarPubli({ navigation }) {
 
             setSentimento("");
 
+
+            // -------------------------------------------------
+            // AVISO
+            // -------------------------------------------------
+
             Alert.alert(
                 "Publicação criada!",
                 "Sua publicação foi publicada com sucesso."
             );
 
+
+            // -------------------------------------------------
+            // VOLTAR PARA INÍCIO
+            // -------------------------------------------------
+
             navigation.navigate("Inicio");
 
-        } catch (error) {
+        }
+
+        catch (error) {
 
             console.log(
                 "Erro ao criar publicação:",
@@ -297,9 +586,14 @@ export default function CriarPubli({ navigation }) {
                 "Erro",
                 "Não foi possível criar a publicação."
             );
+
         }
     };
 
+
+    // =====================================================
+    // TELA
+    // =====================================================
 
     return (
 
@@ -308,6 +602,7 @@ export default function CriarPubli({ navigation }) {
         >
 
             <KeyboardAvoidingView
+
                 style={{ flex: 1 }}
 
                 behavior={
@@ -315,6 +610,7 @@ export default function CriarPubli({ navigation }) {
                         ? "padding"
                         : undefined
                 }
+
             >
 
                 <ScrollView
@@ -326,9 +622,12 @@ export default function CriarPubli({ navigation }) {
                     keyboardShouldPersistTaps="handled"
 
                     showsVerticalScrollIndicator={false}
+
                 >
 
-                    {/* CABEÇALHO */}
+                    {/* =================================================
+                        CABEÇALHO
+                    ================================================= */}
 
                     <View
                         style={CriarPubliStyle.header}
@@ -340,13 +639,21 @@ export default function CriarPubli({ navigation }) {
                             Criar publicação
                         </Text>
 
+
                         <TouchableOpacity
+
                             onPress={handleFechar}
-                            style={CriarPubliStyle.closeButton}
+
+                            style={
+                                CriarPubliStyle.closeButton
+                            }
+
                         >
 
                             <Text
-                                style={CriarPubliStyle.closeText}
+                                style={
+                                    CriarPubliStyle.closeText
+                                }
                             >
                                 ✕
                             </Text>
@@ -356,20 +663,28 @@ export default function CriarPubli({ navigation }) {
                     </View>
 
 
-                    {/* PERGUNTA */}
+                    {/* =================================================
+                        PERGUNTA
+                    ================================================= */}
 
                     <Text
-                        style={CriarPubliStyle.question}
+                        style={
+                            CriarPubliStyle.question
+                        }
                     >
                         O que você está pensando?
                     </Text>
 
 
-                    {/* TEXTO */}
+                    {/* =================================================
+                        TEXTO
+                    ================================================= */}
 
                     <TextInput
 
-                        style={CriarPubliStyle.textInput}
+                        style={
+                            CriarPubliStyle.textInput
+                        }
 
                         placeholder="Compartilhe algo..."
 
@@ -386,40 +701,63 @@ export default function CriarPubli({ navigation }) {
                     />
 
 
-                    {/* CONTADOR */}
+                    {/* =================================================
+                        CONTADOR
+                    ================================================= */}
 
                     <Text
-                        style={CriarPubliStyle.counter}
+                        style={
+                            CriarPubliStyle.counter
+                        }
                     >
                         {texto.length}/500
                     </Text>
 
 
-                    {/* OPÇÕES */}
+                    {/* =================================================
+                        OPÇÕES
+                    ================================================= */}
 
                     <View
-                        style={CriarPubliStyle.options}
+                        style={
+                            CriarPubliStyle.options
+                        }
                     >
 
                         {/* FOTO */}
 
                         <TouchableOpacity
-                            style={CriarPubliStyle.option}
-                            onPress={escolherFoto}
+
+                            style={
+                                CriarPubliStyle.option
+                            }
+
+                            onPress={
+                                escolherFoto
+                            }
+
                         >
 
                             <Image
 
-                                source={require("../../../assets/GaleriaImagem.png")}
+                                source={
+                                    require(
+                                        "../../../assets/GaleriaImagem.png"
+                                    )
+                                }
 
-                                style={CriarPubliStyle.optionIcon}
+                                style={
+                                    CriarPubliStyle.optionIcon
+                                }
 
                                 resizeMode="contain"
 
                             />
 
                             <Text
-                                style={CriarPubliStyle.optionText}
+                                style={
+                                    CriarPubliStyle.optionText
+                                }
                             >
                                 Foto
                             </Text>
@@ -430,22 +768,37 @@ export default function CriarPubli({ navigation }) {
                         {/* LOCALIZAÇÃO */}
 
                         <TouchableOpacity
-                            style={CriarPubliStyle.option}
-                            onPress={pegarLocalizacao}
+
+                            style={
+                                CriarPubliStyle.option
+                            }
+
+                            onPress={
+                                pegarLocalizacao
+                            }
+
                         >
 
                             <Image
 
-                                source={require("../../../assets/Localizacao.png")}
+                                source={
+                                    require(
+                                        "../../../assets/Localizacao.png"
+                                    )
+                                }
 
-                                style={CriarPubliStyle.optionIcon}
+                                style={
+                                    CriarPubliStyle.optionIcon
+                                }
 
                                 resizeMode="contain"
 
                             />
 
                             <Text
-                                style={CriarPubliStyle.optionText}
+                                style={
+                                    CriarPubliStyle.optionText
+                                }
                             >
                                 Localização
                             </Text>
@@ -457,7 +810,9 @@ export default function CriarPubli({ navigation }) {
 
                         <TouchableOpacity
 
-                            style={CriarPubliStyle.option}
+                            style={
+                                CriarPubliStyle.option
+                            }
 
                             onPress={() =>
                                 setMostrarSentimentos(
@@ -469,16 +824,24 @@ export default function CriarPubli({ navigation }) {
 
                             <Image
 
-                                source={require("../../../assets/Emocoes.png")}
+                                source={
+                                    require(
+                                        "../../../assets/Emocoes.png"
+                                    )
+                                }
 
-                                style={CriarPubliStyle.optionIcon}
+                                style={
+                                    CriarPubliStyle.optionIcon
+                                }
 
                                 resizeMode="contain"
 
                             />
 
                             <Text
-                                style={CriarPubliStyle.optionText}
+                                style={
+                                    CriarPubliStyle.optionText
+                                }
                             >
                                 Sentimento
                             </Text>
@@ -488,7 +851,9 @@ export default function CriarPubli({ navigation }) {
                     </View>
 
 
-                    {/* SENTIMENTOS */}
+                    {/* =================================================
+                        SENTIMENTOS
+                    ================================================= */}
 
                     {mostrarSentimentos && (
 
@@ -514,7 +879,9 @@ export default function CriarPubli({ navigation }) {
                                     key={item}
 
                                     onPress={() =>
-                                        selecionarSentimento(item)
+                                        selecionarSentimento(
+                                            item
+                                        )
                                     }
 
                                     style={
@@ -536,7 +903,9 @@ export default function CriarPubli({ navigation }) {
                     )}
 
 
-                    {/* FOTO SELECIONADA */}
+                    {/* =================================================
+                        FOTO SELECIONADA
+                    ================================================= */}
 
                     {imagem !== "" && (
 
@@ -559,6 +928,7 @@ export default function CriarPubli({ navigation }) {
                                 resizeMode="cover"
 
                             />
+
 
                             <TouchableOpacity
 
@@ -583,7 +953,9 @@ export default function CriarPubli({ navigation }) {
                     )}
 
 
-                    {/* LOCALIZAÇÃO SELECIONADA */}
+                    {/* =================================================
+                        LOCALIZAÇÃO SELECIONADA
+                    ================================================= */}
 
                     {localizacao !== "" && (
 
@@ -602,7 +974,9 @@ export default function CriarPubli({ navigation }) {
                     )}
 
 
-                    {/* SENTIMENTO SELECIONADO */}
+                    {/* =================================================
+                        SENTIMENTO SELECIONADO
+                    ================================================= */}
 
                     {sentimento !== "" && (
 
@@ -621,7 +995,9 @@ export default function CriarPubli({ navigation }) {
                     )}
 
 
-                    {/* BOTÃO PUBLICAR */}
+                    {/* =================================================
+                        BOTÃO PUBLICAR
+                    ================================================= */}
 
                     <TouchableOpacity
 
@@ -629,7 +1005,9 @@ export default function CriarPubli({ navigation }) {
                             CriarPubliStyle.createButton
                         }
 
-                        onPress={handleCriarPublicacao}
+                        onPress={
+                            handleCriarPublicacao
+                        }
 
                     >
 
@@ -650,4 +1028,5 @@ export default function CriarPubli({ navigation }) {
         </SafeAreaView>
 
     );
+
 }

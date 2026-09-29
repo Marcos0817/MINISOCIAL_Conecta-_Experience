@@ -1,4 +1,7 @@
-import React, { useCallback, useState } from "react";
+import React, {
+    useCallback,
+    useState,
+} from "react";
 
 import {
     View,
@@ -6,71 +9,197 @@ import {
     Image,
     TouchableOpacity,
     ScrollView,
+    Modal,
 } from "react-native";
 
-import { Ionicons } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useFocusEffect } from "@react-navigation/native";
+import {
+    Ionicons,
+} from "@expo/vector-icons";
+
+import {
+    SafeAreaView,
+} from "react-native-safe-area-context";
+
+import {
+    useFocusEffect,
+} from "@react-navigation/native";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import PerfilStyle from "./PerfilStyle";
 
 import Footer from "../../components/footer/Footer";
+
 import api from "../../services/api";
 
 
-const TelaPerfil = ({ navigation }) => {
+const TelaPerfil = ({
+    navigation,
+    route,
+}) => {
 
-    const [usuario, setUsuario] = useState({
+    // =====================================================
+    // ID DO PERFIL QUE FOI CLICADO
+    // =====================================================
+
+    const usuarioIdPerfil =
+        route?.params?.usuarioId;
+
+
+    // =====================================================
+    // USUÁRIO LOGADO
+    // =====================================================
+
+    const [
+        usuarioLogadoId,
+        setUsuarioLogadoId,
+    ] = useState("");
+
+
+    // =====================================================
+    // USUÁRIO DO PERFIL
+    // =====================================================
+
+    const [
+        usuario,
+        setUsuario,
+    ] = useState({
+
         id: "",
         nome: "",
         email: "",
         usuario: "",
         bio: "",
         foto: "",
-    });
 
-    const [publicacoes, setPublicacoes] = useState([]);
+    });
 
 
     // =====================================================
-    // CARREGAR USUÁRIO E PUBLICAÇÕES
+    // PUBLICAÇÕES DO USUÁRIO
+    // =====================================================
+
+    const [
+        publicacoes,
+        setPublicacoes,
+    ] = useState([]);
+
+
+    // =====================================================
+    // PUBLICAÇÕES SALVAS
+    // =====================================================
+
+    const [
+        publicacoesSalvas,
+        setPublicacoesSalvas,
+    ] = useState([]);
+
+
+    // =====================================================
+    // ABA SELECIONADA
+    // =====================================================
+
+    const [
+        abaSelecionada,
+        setAbaSelecionada,
+    ] = useState(
+        "publicacoes"
+    );
+
+
+    // =====================================================
+    // IMAGEM DO PERFIL EXPANDIDA
+    // =====================================================
+
+    const [
+        imagemExpandida,
+        setImagemExpandida,
+    ] = useState(false);
+
+
+    // =====================================================
+    // VERIFICAR SE É O MEU PERFIL
+    // =====================================================
+
+    const ehMeuPerfil =
+        String(usuario?.id) ===
+        String(usuarioLogadoId);
+
+
+    // =====================================================
+    // CARREGAR USUÁRIO
     // =====================================================
 
     const carregarUsuario = async () => {
 
         try {
 
-            const usuarioId =
-                await AsyncStorage.getItem("usuarioId");
+            // =================================================
+            // PEGAR ID DO USUÁRIO LOGADO
+            // =================================================
 
-            console.log(
-                "ID DO USUÁRIO LOGADO:",
-                usuarioId
+            const idLogado =
+                await AsyncStorage.getItem(
+                    "idUsuario"
+                );
+
+
+            setUsuarioLogadoId(
+                idLogado || ""
             );
 
 
-            if (!usuarioId) {
+            if (!idLogado) {
 
                 console.log(
-                    "ID do usuário não encontrado."
+                    "ID do usuário logado não encontrado."
                 );
 
                 return;
+
             }
 
 
             // =================================================
-            // BUSCAR USUÁRIO
+            // DEFINIR QUAL PERFIL SERÁ ABERTO
+            // =================================================
+
+            const idDoPerfil =
+                usuarioIdPerfil ||
+                idLogado;
+
+
+            console.log(
+                "===================================="
+            );
+
+            console.log(
+                "ID LOGADO:",
+                idLogado
+            );
+
+            console.log(
+                "ID DO PERFIL:",
+                idDoPerfil
+            );
+
+            console.log(
+                "===================================="
+            );
+
+
+            // =================================================
+            // BUSCAR O USUÁRIO
             // =================================================
 
             const respostaUsuario =
                 await api.get(
-                    `/usuarios/${usuarioId}`
+                    `/usuarios/${idDoPerfil}`
                 );
 
+
             console.log(
-                "USUÁRIO:",
+                "USUÁRIO ENCONTRADO:",
                 respostaUsuario.data
             );
 
@@ -81,7 +210,7 @@ const TelaPerfil = ({ navigation }) => {
 
 
             // =================================================
-            // BUSCAR PUBLICAÇÕES
+            // BUSCAR TODAS AS PUBLICAÇÕES
             // =================================================
 
             const respostaPublicacoes =
@@ -90,51 +219,109 @@ const TelaPerfil = ({ navigation }) => {
                 );
 
 
-            console.log(
-                "TODAS AS PUBLICAÇÕES:",
-                respostaPublicacoes.data
-            );
-
-
             // =================================================
-            // FILTRAR PUBLICAÇÕES DO USUÁRIO
+            // FILTRAR PUBLICAÇÕES DO PERFIL
             // =================================================
 
             const minhasPublicacoes =
                 respostaPublicacoes.data.filter(
-                    (publicacao) => {
+                    (publicacao) =>
 
-                        return (
-                            String(
-                                publicacao.usuarioId
-                            ) ===
-                            String(usuarioId)
-                        );
-
-                    }
+                        String(
+                            publicacao.usuarioId
+                        ) ===
+                        String(
+                            idDoPerfil
+                        )
                 );
 
 
             console.log(
-                "MINHAS PUBLICAÇÕES:",
+                "PUBLICAÇÕES DO PERFIL:",
                 minhasPublicacoes
             );
 
-
-            // =================================================
-            // SALVAR PUBLICAÇÕES
-            // =================================================
 
             setPublicacoes(
                 minhasPublicacoes
             );
 
+
+            // =================================================
+            // PUBLICAÇÕES SALVAS
+            // =================================================
+
+            if (
+                String(idDoPerfil) ===
+                String(idLogado)
+            ) {
+
+                const salvasStorage =
+                    await AsyncStorage.getItem(
+                        `publicacoesSalvas_${idLogado}`
+                    );
+
+
+                let idsSalvos = [];
+
+
+                if (salvasStorage) {
+
+                    idsSalvos =
+                        JSON.parse(
+                            salvasStorage
+                        );
+
+                }
+
+
+                const minhasPublicacoesSalvas =
+                    respostaPublicacoes.data.filter(
+                        (publicacao) =>
+
+                            idsSalvos.some(
+                                (id) =>
+
+                                    String(id) ===
+                                    String(
+                                        publicacao.id
+                                    )
+                            )
+                    );
+
+
+                setPublicacoesSalvas(
+                    minhasPublicacoesSalvas
+                );
+
+
+            } else {
+
+                // =================================================
+                // OUTRO USUÁRIO
+                // =================================================
+
+                setPublicacoesSalvas(
+                    []
+                );
+
+            }
+
+
+            // =================================================
+            // SEMPRE COMEÇAR EM PUBLICAÇÕES
+            // =================================================
+
+            setAbaSelecionada(
+                "publicacoes"
+            );
+
+
         } catch (erro) {
 
             console.log(
-                "ERRO AO CARREGAR PERFIL:",
-                erro.response?.data ||
-                erro.message
+                "Erro ao carregar perfil:",
+                erro
             );
 
         }
@@ -143,7 +330,7 @@ const TelaPerfil = ({ navigation }) => {
 
 
     // =====================================================
-    // ATUALIZAR AO VOLTAR PARA O PERFIL
+    // RECARREGAR AO ENTRAR NA TELA
     // =====================================================
 
     useFocusEffect(
@@ -152,7 +339,9 @@ const TelaPerfil = ({ navigation }) => {
 
             carregarUsuario();
 
-        }, [])
+        }, [
+            usuarioIdPerfil
+        ])
 
     );
 
@@ -166,7 +355,7 @@ const TelaPerfil = ({ navigation }) => {
         try {
 
             await AsyncStorage.removeItem(
-                "usuarioId"
+                "idUsuario"
             );
 
             await AsyncStorage.removeItem(
@@ -179,13 +368,17 @@ const TelaPerfil = ({ navigation }) => {
 
 
             navigation.reset({
+
                 index: 0,
+
                 routes: [
                     {
-                        name: "BoasVindas"
-                    }
+                        name: "BoasVindas",
+                    },
                 ],
+
             });
+
 
         } catch (erro) {
 
@@ -203,12 +396,14 @@ const TelaPerfil = ({ navigation }) => {
     // ABRIR PUBLICAÇÃO
     // =====================================================
 
-    const abrirPublicacao = (id) => {
+    const abrirPublicacao = (
+        id
+    ) => {
 
         navigation.navigate(
             "Publicacao",
             {
-                publicacaoId: id
+                publicacaoId: id,
             }
         );
 
@@ -216,76 +411,156 @@ const TelaPerfil = ({ navigation }) => {
 
 
     // =====================================================
-    // PEGAR IMAGEM
+    // PEGAR FOTO DO PERFIL
     // =====================================================
 
-    const pegarImagem = (foto) => {
+    const pegarImagem = (
+        foto
+    ) => {
 
         if (
-            foto === "images-galocego.jpg"
+            !foto ||
+            foto === ""
         ) {
 
             return require(
-                "../../../assets/images-galocego.jpg"
+                "../../../assets/perfilIcone.png"
             );
 
         }
 
+
+        if (
+            foto ===
+            "images-galocego.jpg"
+        ) {
+
+            return require(
+                "../../../assets/perfilIcone.png"
+            );
+
+        }
+
+
+        if (
+            foto ===
+            "perfilIcone.png"
+        ) {
+
+            return require(
+                "../../../assets/perfilIcone.png"
+            );
+
+        }
+
+
         return {
-            uri: foto
+            uri: foto,
         };
 
     };
 
 
+    // =====================================================
+    // DEFINIR PUBLICAÇÕES EXIBIDAS
+    // =====================================================
+
+    const publicacoesExibidas =
+
+        abaSelecionada ===
+            "publicacoes"
+
+            ? publicacoes
+
+            : publicacoesSalvas;
+
+
+    // =====================================================
+    // TELA
+    // =====================================================
+
     return (
 
         <SafeAreaView
-            style={PerfilStyle.container}
+            style={
+                PerfilStyle.container
+            }
         >
 
             <ScrollView
+
+                showsVerticalScrollIndicator={
+                    false
+                }
+
                 contentContainerStyle={
                     PerfilStyle.scrollContent
                 }
-                showsVerticalScrollIndicator={false}
+
             >
 
                 {/* =====================================================
                     BOTÃO SAIR
                 ===================================================== */}
 
-                <TouchableOpacity
-                    style={PerfilStyle.sair}
-                    onPress={handleLogout}
-                >
+                {
+                    ehMeuPerfil && (
 
-                    <Ionicons
-                        name="log-out-outline"
-                        size={27}
-                        color="#FF6B00"
-                    />
+                        <TouchableOpacity
 
-                </TouchableOpacity>
+                            style={
+                                PerfilStyle.sair
+                            }
+
+                            onPress={
+                                handleLogout
+                            }
+
+                        >
+
+                            <Ionicons
+                                name="log-out-outline"
+                                size={25}
+                                color="#315F53"
+                            />
+
+                        </TouchableOpacity>
+
+                    )
+                }
 
 
                 {/* =====================================================
                     CONFIGURAÇÕES
                 ===================================================== */}
 
-                <TouchableOpacity
-                    style={
-                        PerfilStyle.configuracao
-                    }
-                >
+                {
+                    ehMeuPerfil && (
 
-                    <Ionicons
-                        name="settings-outline"
-                        size={25}
-                        color="#315F53"
-                    />
+                        <TouchableOpacity
 
-                </TouchableOpacity>
+                            style={
+                                PerfilStyle.configuracao
+                            }
+
+                            onPress={() =>
+                                navigation.navigate(
+                                    "Configuracao"
+                                )
+                            }
+
+                        >
+
+                            <Ionicons
+                                name="settings-outline"
+                                size={24}
+                                color="#315F53"
+                            />
+
+                        </TouchableOpacity>
+
+                    )
+                }
 
 
                 {/* =====================================================
@@ -293,14 +568,22 @@ const TelaPerfil = ({ navigation }) => {
                 ===================================================== */}
 
                 <Text
-                    style={PerfilStyle.titulo}
+                    style={
+                        PerfilStyle.titulo
+                    }
                 >
-                    Meu Perfil
+
+                    {
+                        ehMeuPerfil
+                            ? "Meu Perfil"
+                            : "Perfil"
+                    }
+
                 </Text>
 
 
                 {/* =====================================================
-                    FOTO DE PERFIL
+                    FOTO DO PERFIL
                 ===================================================== */}
 
                 <View
@@ -309,41 +592,76 @@ const TelaPerfil = ({ navigation }) => {
                     }
                 >
 
-                    <Image
-                        source={
-                            usuario.foto
-                                ? {
-                                    uri: usuario.foto
-                                }
-                                : require(
-                                    "../../../assets/images-galocego.jpg"
-                                )
-                        }
-                        style={
-                            PerfilStyle.foto
-                        }
-                        resizeMode="cover"
-                    />
-
-
                     <TouchableOpacity
-                        style={
-                            PerfilStyle.botaoEditar
-                        }
+
+                        activeOpacity={0.9}
+
                         onPress={() =>
-                            navigation.navigate(
-                                "EditarPerfil"
-                            )
+                            setImagemExpandida(true)
                         }
+
                     >
 
-                        <Ionicons
-                            name="create-outline"
-                            size={18}
-                            color="#315F53"
+                        <Image
+
+                            source={
+                                pegarImagem(
+                                    usuario.foto
+                                )
+                            }
+
+                            style={
+                                PerfilStyle.foto
+                            }
+
+                            resizeMode="cover"
+
                         />
 
                     </TouchableOpacity>
+
+
+                    {/* =================================================
+                        EDITAR FOTO
+                    ================================================= */}
+
+                    {
+                        ehMeuPerfil && (
+
+                            <TouchableOpacity
+
+                                style={
+                                    PerfilStyle.botaoEditar
+                                }
+
+                                onPress={() =>
+                                    navigation.navigate(
+                                        "EditarPerfil"
+                                    )
+                                }
+
+                            >
+
+                                <Image
+
+                                    source={
+                                        require(
+                                            "../../../assets/EditarPerfil.png"
+                                        )
+                                    }
+
+                                    style={
+                                        PerfilStyle.botaoEditar
+                                    }
+
+                                    resizeMode="contain"
+
+                                />
+
+                            </TouchableOpacity>
+
+                        )
+                    }
 
                 </View>
 
@@ -353,12 +671,16 @@ const TelaPerfil = ({ navigation }) => {
                 ===================================================== */}
 
                 <Text
-                    style={PerfilStyle.nome}
+                    style={
+                        PerfilStyle.nome
+                    }
                 >
+
                     {
                         usuario.nome ||
-                        "Nome do usuário"
+                        "Usuário"
                     }
+
                 </Text>
 
 
@@ -367,12 +689,16 @@ const TelaPerfil = ({ navigation }) => {
                 ===================================================== */}
 
                 <Text
-                    style={PerfilStyle.email}
+                    style={
+                        PerfilStyle.email
+                    }
                 >
+
                     {
                         usuario.email ||
-                        "E-mail não informado"
+                        ""
                     }
+
                 </Text>
 
 
@@ -397,7 +723,11 @@ const TelaPerfil = ({ navigation }) => {
                                 PerfilStyle.numero
                             }
                         >
-                            {publicacoes.length}
+
+                            {
+                                publicacoes.length
+                            }
+
                         </Text>
 
                         <Text
@@ -422,7 +752,7 @@ const TelaPerfil = ({ navigation }) => {
                                 PerfilStyle.numero
                             }
                         >
-                            1900
+                            2794
                         </Text>
 
                         <Text
@@ -467,15 +797,23 @@ const TelaPerfil = ({ navigation }) => {
                     BIO
                 ===================================================== */}
 
-                <Text
-                    style={PerfilStyle.bio}
-                >
-                    {
-                        usuario.bio
-                            ? usuario.bio
-                            : "Nenhuma biografia adicionada."
-                    }
-                </Text>
+                {
+                    usuario.bio ? (
+
+                        <Text
+                            style={
+                                PerfilStyle.bio
+                            }
+                        >
+
+                            {
+                                usuario.bio
+                            }
+
+                        </Text>
+
+                    ) : null
+                }
 
 
                 {/* =====================================================
@@ -483,33 +821,121 @@ const TelaPerfil = ({ navigation }) => {
                 ===================================================== */}
 
                 <View
-                    style={PerfilStyle.abas}
+                    style={[
+                        PerfilStyle.abas,
+
+                        !ehMeuPerfil && {
+                            justifyContent:
+                                "center",
+                        },
+
+                    ]}
                 >
 
-                    <View
-                        style={PerfilStyle.aba}
+                    {/* =================================================
+                        PUBLICAÇÕES
+                    ================================================= */}
+
+                    <TouchableOpacity
+
+                        style={[
+                            PerfilStyle.aba,
+
+                            !ehMeuPerfil && {
+                                width: "100%",
+                                alignItems: "center",
+                            },
+
+                        ]}
+
+                        onPress={() =>
+                            setAbaSelecionada(
+                                "publicacoes"
+                            )
+                        }
+
                     >
 
-                        <Ionicons
-                            name="grid-outline"
-                            size={22}
-                            color="#315F53"
+                        <Image
+
+                            source={
+                                require(
+                                    "../../../assets/posts.png"
+                                )
+                            }
+
+                            style={{
+
+                                width: 24,
+                                height: 24,
+
+                                opacity:
+                                    abaSelecionada ===
+                                        "publicacoes"
+                                        ? 1
+                                        : 0.5,
+
+                            }}
+
+                            resizeMode="contain"
+
                         />
 
-                    </View>
+                    </TouchableOpacity>
 
 
-                    <View
-                        style={PerfilStyle.aba}
-                    >
+                    {/* =================================================
+                        SALVOS
+                        
+                        SÓ APARECE NO MEU PERFIL
+                    ================================================= */}
 
-                        <Ionicons
-                            name="bookmark-outline"
-                            size={22}
-                            color="#777777"
-                        />
+                    {
+                        ehMeuPerfil && (
 
-                    </View>
+                            <TouchableOpacity
+
+                                style={
+                                    PerfilStyle.aba
+                                }
+
+                                onPress={() =>
+                                    setAbaSelecionada(
+                                        "salvos"
+                                    )
+                                }
+
+                            >
+
+                                <Image
+
+                                    source={
+                                        require(
+                                            "../../../assets/Salvar.png"
+                                        )
+                                    }
+
+                                    style={{
+
+                                        width: 24,
+                                        height: 24,
+
+                                        opacity:
+                                            abaSelecionada ===
+                                                "salvos"
+                                                ? 1
+                                                : 0.5,
+
+                                    }}
+
+                                    resizeMode="contain"
+
+                                />
+
+                            </TouchableOpacity>
+
+                        )
+                    }
 
                 </View>
 
@@ -524,15 +950,46 @@ const TelaPerfil = ({ navigation }) => {
                     }
                 />
 
+
+                {/* =====================================================
+                    LINHA VERDE ATIVA
+                ===================================================== */}
+
                 <View
-                    style={
-                        PerfilStyle.linhaAtiva
-                    }
+                    style={[
+
+                        PerfilStyle.linhaAtiva,
+
+                        // =============================================
+                        // MEU PERFIL + SALVOS
+                        // =============================================
+
+                        ehMeuPerfil &&
+                        abaSelecionada === "salvos"
+
+                            ? PerfilStyle.linhaAtivaSalvos
+
+                            : null,
+
+                        // =============================================
+                        // OUTRO PERFIL
+                        //
+                        // CENTRALIZA A LINHA ABAIXO DE PUBLICAÇÕES
+                        // =============================================
+
+                        !ehMeuPerfil && {
+
+                            left: "23%",
+                            width: "30%",
+
+                        },
+
+                    ]}
                 />
 
 
                 {/* =====================================================
-                    PUBLICAÇÕES
+                    GRADE DE PUBLICAÇÕES
                 ===================================================== */}
 
                 <View
@@ -541,62 +998,233 @@ const TelaPerfil = ({ navigation }) => {
                     }
                 >
 
-                    {publicacoes.map(
-                        (publicacao) => (
+                    {
+                        publicacoesExibidas.map(
+                            (publicacao) => (
 
-                        <TouchableOpacity
-                            key={publicacao.id}
-                            style={
-                                PerfilStyle.cardPublicacao
-                            }
-                            activeOpacity={0.8}
-                            onPress={() =>
-                                abrirPublicacao(
-                                    publicacao.id
-                                )
-                            }
-                        >
+                                <TouchableOpacity
 
-                            {publicacao.foto ? (
+                                    key={
+                                        publicacao.id
+                                    }
 
-                                <Image
-                                    source={
-                                        pegarImagem(
-                                            publicacao.foto
+                                    style={
+                                        PerfilStyle.cardPublicacao
+                                    }
+
+                                    onPress={() =>
+                                        abrirPublicacao(
+                                            publicacao.id
                                         )
                                     }
-                                    style={
-                                        PerfilStyle.imagemPublicacao
-                                    }
-                                    resizeMode="cover"
-                                />
 
-                            ) : (
+                                    activeOpacity={0.8}
 
-                                <View
-                                    style={
-                                        PerfilStyle.publicacaoSemImagem
-                                    }
                                 >
 
-                                    <Ionicons
-                                        name="image-outline"
-                                        size={30}
-                                        color="#999999"
-                                    />
+                                    {
+                                        publicacao.foto ? (
 
-                                </View>
+                                            <Image
 
-                            )}
+                                                source={{
+                                                    uri:
+                                                        publicacao.foto
+                                                }}
 
-                        </TouchableOpacity>
+                                                style={
+                                                    PerfilStyle.imagemPublicacao
+                                                }
 
-                    ))}
+                                                resizeMode="cover"
+
+                                            />
+
+                                        ) : (
+
+                                            <View
+                                                style={
+                                                    PerfilStyle.publicacaoSemImagem
+                                                }
+                                            >
+
+                                                <Text>
+                                                    Sem imagem
+                                                </Text>
+
+                                            </View>
+
+                                        )
+                                    }
+
+                                </TouchableOpacity>
+
+                            )
+                        )
+                    }
 
                 </View>
 
 
+                {/* =====================================================
+                    NENHUMA PUBLICAÇÃO
+                ===================================================== */}
+
+                {
+                    publicacoesExibidas.length ===
+                    0 && (
+
+                        <View
+                            style={{
+
+                                width: "100%",
+
+                                alignItems:
+                                    "center",
+
+                                marginTop:
+                                    30,
+
+                                paddingHorizontal:
+                                    20,
+
+                            }}
+                        >
+
+                            <Text
+                                style={{
+
+                                    color:
+                                        "#777",
+
+                                    fontSize:
+                                        14,
+
+                                    textAlign:
+                                        "center",
+
+                                }}
+                            >
+
+                                {
+                                    abaSelecionada ===
+                                        "salvos"
+
+                                        ? "Você ainda não salvou nenhuma publicação."
+
+                                        : "Este usuário ainda não possui publicações."
+                                }
+
+                            </Text>
+
+                        </View>
+
+                    )
+                }
+
             </ScrollView>
+
+
+            {/* =====================================================
+                MODAL DA FOTO DE PERFIL
+            ===================================================== */}
+
+            <Modal
+
+                visible={
+                    imagemExpandida
+                }
+
+                transparent={true}
+
+                animationType="fade"
+
+                onRequestClose={() =>
+                    setImagemExpandida(
+                        false
+                    )
+                }
+
+            >
+
+                <View
+                    style={
+                        PerfilStyle.modalContainer
+                    }
+                >
+
+                    {/* =================================================
+                        BOTÃO FECHAR
+                    ================================================= */}
+
+                    <TouchableOpacity
+
+                        onPress={() =>
+                            setImagemExpandida(
+                                false
+                            )
+                        }
+
+                        activeOpacity={0.7}
+
+                        style={
+                            PerfilStyle.botaoFecharModal
+                        }
+
+                    >
+
+                        <Text
+                            style={
+                                PerfilStyle.textoFecharModal
+                            }
+                        >
+                            ×
+                        </Text>
+
+                    </TouchableOpacity>
+
+
+                    {/* =================================================
+                        IMAGEM GRANDE
+                    ================================================= */}
+
+                    <TouchableOpacity
+
+                        activeOpacity={1}
+
+                        onPress={() =>
+                            setImagemExpandida(
+                                false
+                            )
+                        }
+
+                        style={
+                            PerfilStyle.areaImagemModal
+                        }
+
+                    >
+
+                        <Image
+
+                            source={
+                                pegarImagem(
+                                    usuario.foto
+                                )
+                            }
+
+                            style={
+                                PerfilStyle.imagemModal
+                            }
+
+                            resizeMode="contain"
+
+                        />
+
+                    </TouchableOpacity>
+
+                </View>
+
+            </Modal>
 
 
             {/* =====================================================
@@ -604,11 +1232,15 @@ const TelaPerfil = ({ navigation }) => {
             ===================================================== */}
 
             <Footer
-                navigation={navigation}
+                navigation={
+                    navigation
+                }
             />
 
         </SafeAreaView>
+
     );
+
 };
 
 
